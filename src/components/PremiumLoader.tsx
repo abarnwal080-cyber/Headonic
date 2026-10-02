@@ -1,264 +1,560 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Scissors,
-  Crown,
-  Sparkles,
-  Gem,
-  ShieldCheck,
-  MapPin,
-  Star,
-  CheckCircle2,
-  Flame,
-} from 'lucide-react';
 
 interface PremiumLoaderProps {
   onComplete?: () => void;
   forceShow?: boolean;
 }
 
-const SERVICE_ICONS = [
-  {
-    id: 'bridal',
-    label: 'Royal Bridal Glam',
-    hindi: 'रॉयल दुल्हन शृंगार',
-    icon: Crown,
-    color: 'from-amber-400 to-yellow-600',
-    desc: 'HD & Airbrush Bridal Makeover',
-  },
-  {
-    id: 'hair',
-    label: 'Precision Hair Styling',
-    hindi: 'हेयर कटिंग और स्मूदनिंग',
-    icon: Scissors,
-    color: 'from-yellow-400 to-amber-600',
-    desc: 'Keratin, Fades & Balayage',
-  },
-  {
-    id: 'skin',
-    label: 'Radiant Skincare',
-    hindi: 'ग्लोइंग स्किन और फेशियल',
-    icon: Sparkles,
-    color: 'from-amber-300 to-yellow-500',
-    desc: 'Hydrafacial & De-Tan Glow',
-  },
-  {
-    id: 'beard',
-    label: 'Beard & Grooming',
-    hindi: 'दाढ़ी स्टाइलिंग और शेव',
-    icon: Flame,
-    color: 'from-yellow-500 to-amber-700',
-    desc: 'Hot Towel Shave & Sculpting',
-  },
-  {
-    id: 'luxury',
-    label: '100% Genuine Brands',
-    hindi: 'ओरिजिनल लग्जरी प्रोडक्ट्स',
-    icon: Gem,
-    color: 'from-amber-400 to-yellow-600',
-    desc: 'L’Oréal, Matrix, MAC & O3+',
-  },
-  {
-    id: 'hygiene',
-    label: 'Hospital-Grade Hygiene',
-    hindi: 'पूर्ण स्वच्छता और सैनिटाइजेशन',
-    icon: ShieldCheck,
-    color: 'from-yellow-400 to-amber-500',
-    desc: 'Sterilized Tools & Private Suites',
-  },
-];
-
-const LOADING_STEPS = [
-  { progress: 15, text: 'Initializing Royal Ambiance...', subtext: 'Maharajganj’s Premier Beauty Sanctuary' },
-  { progress: 38, text: 'Celebrating Pride of Maharajganj...', subtext: 'Serving Siwan & Duraundha with Excellence' },
-  { progress: 65, text: 'Loading Precision Styling & Bridal Glam...', subtext: 'Certified Makeup Artists & Master Barbers' },
-  { progress: 88, text: 'Preparing 100% Genuine Luxury Experience...', subtext: 'Near Reliance Trends Mart · Sita Complex' },
-  { progress: 100, text: 'Welcome to Hedonic Unisex Salon', subtext: 'Where Beauty Meets Royal Elegance' },
-];
-
 export const PremiumLoader: React.FC<PremiumLoaderProps> = ({ onComplete, forceShow = false }) => {
   const [progress, setProgress] = useState(0);
-  const [activeIconIndex, setActiveIconIndex] = useState(0);
-  const [isFadingOut, setIsFadingOut] = useState(false);
-  const [isRendered, setIsRendered] = useState(true);
+  const [statusText, setStatusText] = useState('Creating Your Experience');
+  const [isHide, setIsHide] = useState(false);
+  const [isMounted, setIsMounted] = useState(true);
 
-  // Smooth progress increment
   useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          return 100;
+    const messages = [
+      'Creating Your Experience',
+      'Preparing Salon Experience',
+      'Polishing Your Style',
+      'Almost Ready',
+    ];
+
+    let value = 0;
+    const totalTime = 2700;
+    const intervalTime = 25;
+    const step = 100 / (totalTime / intervalTime);
+    let messageIndex = 0;
+
+    const timer = setInterval(() => {
+      value += step;
+
+      if (value >= 100) {
+        value = 100;
+        clearInterval(timer);
+        setProgress(100);
+        setStatusText('Welcome to Hedonic');
+
+        setTimeout(() => {
+          setIsHide(true);
+          setTimeout(() => {
+            setIsMounted(false);
+            if (onComplete) onComplete();
+          }, 800);
+        }, 500);
+      } else {
+        setProgress(Math.floor(value));
+
+        if (value > 25 && messageIndex === 0) {
+          messageIndex++;
+          setStatusText(messages[1]);
         }
-        // Ease the loading speed
-        const increment = prev < 40 ? 3 : prev < 75 ? 2.5 : prev < 90 ? 2 : 1.5;
-        const nextVal = Math.min(100, prev + increment);
-        return nextVal;
-      });
-    }, 45);
+        if (value > 50 && messageIndex === 1) {
+          messageIndex++;
+          setStatusText(messages[2]);
+        }
+        if (value > 78 && messageIndex === 2) {
+          messageIndex++;
+          setStatusText(messages[3]);
+        }
+      }
+    }, intervalTime);
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => clearInterval(timer);
+  }, [onComplete]);
 
-  // Icon rotation sync
-  useEffect(() => {
-    const iconInterval = setInterval(() => {
-      setActiveIconIndex((prev) => (prev + 1) % SERVICE_ICONS.length);
-    }, 600);
-
-    return () => clearInterval(iconInterval);
-  }, []);
-
-  // Completion trigger with elegant exit
-  useEffect(() => {
-    if (progress >= 100) {
-      const exitTimer = setTimeout(() => {
-        setIsFadingOut(true);
-        const removeTimer = setTimeout(() => {
-          setIsRendered(false);
-          if (onComplete) onComplete();
-        }, 650);
-        return () => clearTimeout(removeTimer);
-      }, 500);
-      return () => clearTimeout(exitTimer);
-    }
-  }, [progress, onComplete]);
-
-  if (!isRendered && !forceShow) return null;
-
-  // Current dynamic step message
-  const currentStep =
-    LOADING_STEPS.find((step) => progress <= step.progress) || LOADING_STEPS[LOADING_STEPS.length - 1];
-
-  const CurrentActiveIcon = SERVICE_ICONS[activeIconIndex].icon;
+  if (!isMounted && !forceShow) return null;
 
   return (
-    <div
-      role="status"
-      aria-label="Loading Hedonic Unisex Salon"
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-[#07080b] text-[#f4efe6] transition-all duration-700 overflow-hidden select-none ${
-        isFadingOut ? 'opacity-0 scale-105 pointer-events-none' : 'opacity-100 scale-100'
-      }`}
-    >
-      {/* Ambient background gold glow & geometric luxury grid */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[600px] h-[350px] sm:h-[600px] bg-gradient-to-br from-[#d4af37]/20 via-[#99761a]/10 to-transparent rounded-full blur-[100px] animate-pulse" />
-        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#d4af37]/30 to-transparent" />
-        <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#d4af37]/30 to-transparent" />
-        
-        {/* Subtle decorative luxury background rings */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[520px] rounded-full border border-amber-500/5 animate-[spin_60s_linear_infinite]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[720px] h-[720px] rounded-full border border-dashed border-amber-500/5 animate-[spin_90s_linear_infinite_reverse]" />
-      </div>
+    <>
+      <style>{`
+        .custom-loader-wrapper {
+          position: fixed;
+          inset: 0;
+          z-index: 99999;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          overflow: hidden;
+          background:
+            radial-gradient(circle at 18% 25%, rgba(255,0,128,.20), transparent 30%),
+            radial-gradient(circle at 82% 20%, rgba(0,153,255,.20), transparent 30%),
+            radial-gradient(circle at 50% 85%, rgba(140,0,255,.24), transparent 35%),
+            linear-gradient(135deg,#07050d,#0d0918 45%,#06070f);
+          transition: opacity .8s ease, visibility .8s ease;
+          font-family: "Poppins", "Segoe UI", Arial, sans-serif;
+        }
 
-      {/* Main Loader Content Card */}
-      <div className="relative z-10 w-full max-w-lg px-6 sm:px-8 py-8 flex flex-col items-center text-center">
-        
-        {/* Top "Proud Of Maharajganj" Luxury Pill */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-amber-950/60 via-[#1e1709] to-amber-950/60 border border-[#d4af37]/40 shadow-lg shadow-amber-950/50 mb-6 backdrop-blur-md">
-          <MapPin className="w-3.5 h-3.5 text-[#d4af37] animate-bounce" />
-          <span className="text-[11px] sm:text-xs font-semibold tracking-[0.2em] uppercase text-amber-300 font-sans">
-            Proud of Maharajganj · Siwan · Bihar
-          </span>
-          <Star className="w-3 h-3 text-[#d4af37] fill-[#d4af37]" />
-        </div>
+        .custom-loader-wrapper.hide {
+          opacity: 0;
+          visibility: hidden;
+          pointer-events: none;
+        }
 
-        {/* Central Royal Animated Emblem / Icon Vortex */}
-        <div className="relative mb-6">
-          {/* Rotating outer dash ring */}
-          <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full border-2 border-dashed border-[#d4af37]/40 animate-[spin_12s_linear_infinite] p-1.5 flex items-center justify-center">
-            {/* Inner counter-rotating ring */}
-            <div className="w-full h-full rounded-full border border-[#f5de88]/30 animate-[spin_8s_linear_infinite_reverse] p-2 flex items-center justify-center" />
-          </div>
+        .custom-loader-wrapper .bg-orb {
+          position: absolute;
+          border-radius: 50%;
+          filter: blur(50px);
+          opacity: .45;
+          pointer-events: none;
+        }
 
-          {/* Central Medallion */}
-          <div className="absolute inset-0 m-auto w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-tr from-[#16140b] via-[#241e0f] to-[#121008] border-2 border-[#d4af37] shadow-[0_0_35px_rgba(212,175,55,0.4)] flex flex-col items-center justify-center p-2">
-            <CurrentActiveIcon className="w-8 h-8 sm:w-9 sm:h-9 text-[#f5de88] transition-all duration-300 transform scale-110 drop-shadow-[0_0_8px_rgba(212,175,55,0.8)]" />
-            <span className="text-[9px] font-bold tracking-widest text-[#d4af37] mt-0.5 uppercase">
-              HEDONIC
-            </span>
-          </div>
+        .custom-loader-wrapper .orb1 {
+          width: 280px;
+          height: 280px;
+          background: #ff1680;
+          top: -100px;
+          left: -80px;
+          animation: orbMove1 7s ease-in-out infinite alternate;
+        }
 
-          {/* Micro floating stars */}
-          <div className="absolute -top-1 left-2 w-2 h-2 rounded-full bg-[#f3e5ab] animate-ping" />
-          <div className="absolute bottom-2 -right-1 w-1.5 h-1.5 rounded-full bg-[#d4af37] animate-pulse" />
-        </div>
+        .custom-loader-wrapper .orb2 {
+          width: 300px;
+          height: 300px;
+          background: #512cff;
+          right: -110px;
+          top: 20%;
+          animation: orbMove2 8s ease-in-out infinite alternate;
+        }
 
-        {/* Brand Name & Typography */}
-        <div className="space-y-1 mb-6">
-          <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white drop-shadow-sm">
-            HEDONIC <span className="gold-gradient-text">UNISEX SALON</span>
-          </h1>
-          <p className="text-xs sm:text-sm text-zinc-400 font-light tracking-wide">
-            Royal Beauty Makeovers &bull; Hair Styling &bull; Gents Grooming
-          </p>
-        </div>
+        .custom-loader-wrapper .orb3 {
+          width: 240px;
+          height: 240px;
+          background: #00c8ff;
+          bottom: -100px;
+          left: 25%;
+          animation: orbMove3 6s ease-in-out infinite alternate;
+        }
 
-        {/* Interactive 6-Service Icon Bar with Active Glow */}
-        <div className="w-full max-w-sm grid grid-cols-6 gap-2 p-2 rounded-2xl bg-[#12131a]/80 border border-zinc-800/80 mb-6 backdrop-blur-sm">
-          {SERVICE_ICONS.map((svc, idx) => {
-            const Icon = svc.icon;
-            const isActive = idx === activeIconIndex;
-            return (
-              <div
-                key={svc.id}
-                className={`flex flex-col items-center justify-center py-2 px-1 rounded-xl transition-all duration-300 ${
-                  isActive
-                    ? 'bg-gradient-to-b from-[#d4af37]/25 to-amber-950/40 border border-[#d4af37] text-[#fbf0b8] scale-105 shadow-md shadow-amber-950/60'
-                    : 'text-zinc-500 hover:text-zinc-300 opacity-60'
-                }`}
-                title={svc.label}
-              >
-                <Icon className={`w-4 h-4 sm:w-5 sm:h-5 ${isActive ? 'text-[#f5de88] animate-pulse' : ''}`} />
-              </div>
-            );
-          })}
-        </div>
+        @keyframes orbMove1 {
+          to { transform: translate(90px, 70px) scale(1.18); }
+        }
 
-        {/* Active Service Badge Caption */}
-        <div className="h-6 flex items-center justify-center gap-1.5 text-xs text-amber-200/90 font-medium mb-4 animate-fadeIn">
-          <Sparkles className="w-3.5 h-3.5 text-[#d4af37]" />
-          <span>{SERVICE_ICONS[activeIconIndex].label}</span>
-          <span className="text-zinc-500 text-[10px]">({SERVICE_ICONS[activeIconIndex].hindi})</span>
-        </div>
+        @keyframes orbMove2 {
+          to { transform: translate(-80px, 70px) scale(1.2); }
+        }
 
-        {/* Luxury Golden Progress Bar & Tabular Counter */}
-        <div className="w-full max-w-xs sm:max-w-sm space-y-2">
-          {/* Bar container */}
-          <div className="relative h-1.5 w-full bg-zinc-900 rounded-full overflow-hidden border border-zinc-800">
-            <div
-              className="h-full bg-gradient-to-r from-[#99761a] via-[#d4af37] to-[#fbf0b8] rounded-full transition-all duration-150 ease-out relative shadow-[0_0_12px_rgba(212,175,55,0.8)]"
-              style={{ width: `${progress}%` }}
-            >
-              {/* Shimmer sweep effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-[shimmer_1.5s_infinite]" />
+        @keyframes orbMove3 {
+          to { transform: translate(90px, -70px) scale(1.18); }
+        }
+
+        .custom-loader-wrapper .loader-content {
+          position: relative;
+          z-index: 5;
+          width: min(92%, 650px);
+          text-align: center;
+        }
+
+        .custom-loader-wrapper .icon-stage {
+          position: relative;
+          width: 190px;
+          height: 190px;
+          margin: 0 auto 28px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .custom-loader-wrapper .orbit {
+          position: absolute;
+          inset: 6px;
+          border-radius: 50%;
+          border: 1px solid rgba(255,255,255,.18);
+          animation: spinOrbit 9s linear infinite;
+        }
+
+        .custom-loader-wrapper .orbit::before,
+        .custom-loader-wrapper .orbit::after {
+          content: "";
+          position: absolute;
+          width: 9px;
+          height: 9px;
+          border-radius: 50%;
+          box-shadow: 0 0 18px currentColor;
+        }
+
+        .custom-loader-wrapper .orbit::before {
+          top: 16px;
+          left: 20px;
+          color: #ff4ca5;
+          background: #ff4ca5;
+        }
+
+        .custom-loader-wrapper .orbit::after {
+          bottom: 16px;
+          right: 20px;
+          color: #22d3ff;
+          background: #22d3ff;
+        }
+
+        .custom-loader-wrapper .orbit2 {
+          position: absolute;
+          inset: 28px;
+          border-radius: 50%;
+          border: 1px dashed rgba(255,255,255,.18);
+          animation: spinReverse 12s linear infinite;
+        }
+
+        @keyframes spinOrbit {
+          to { transform: rotate(360deg); }
+        }
+
+        @keyframes spinReverse {
+          to { transform: rotate(-360deg); }
+        }
+
+        .custom-loader-wrapper .center-icon {
+          width: 88px;
+          height: 88px;
+          border-radius: 28px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: linear-gradient(145deg, rgba(255,255,255,.16), rgba(255,255,255,.04));
+          border: 1px solid rgba(255,255,255,.25);
+          box-shadow:
+            0 0 25px rgba(255,42,151,.20),
+            0 0 55px rgba(84,44,255,.18),
+            inset 0 0 25px rgba(255,255,255,.05);
+          backdrop-filter: blur(14px);
+          animation: centerPulse 2.2s ease-in-out infinite;
+        }
+
+        .custom-loader-wrapper .center-icon svg {
+          width: 44px;
+          height: 44px;
+          filter: drop-shadow(0 0 8px rgba(255,195,80,.6));
+        }
+
+        @keyframes centerPulse {
+          0%, 100% {
+            transform: scale(1);
+            box-shadow:
+              0 0 25px rgba(255,42,151,.20),
+              0 0 55px rgba(84,44,255,.18);
+          }
+          50% {
+            transform: scale(1.08);
+            box-shadow:
+              0 0 38px rgba(255,42,151,.35),
+              0 0 80px rgba(84,44,255,.30);
+          }
+        }
+
+        .custom-loader-wrapper .service-icon {
+          position: absolute;
+          width: 48px;
+          height: 48px;
+          border-radius: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(15,15,25,.78);
+          border: 1px solid rgba(255,255,255,.15);
+          backdrop-filter: blur(10px);
+          box-shadow: 0 10px 30px rgba(0,0,0,.35);
+        }
+
+        .custom-loader-wrapper .service-icon svg {
+          width: 24px;
+          height: 24px;
+          stroke-width: 1.8;
+        }
+
+        .custom-loader-wrapper .icon-scissors {
+          top: 0;
+          left: 24px;
+          color: #ff4e9b;
+          animation: floatA 3s ease-in-out infinite;
+        }
+
+        .custom-loader-wrapper .icon-lipstick {
+          top: 23px;
+          right: 4px;
+          color: #ff6bce;
+          animation: floatB 3.4s ease-in-out infinite;
+        }
+
+        .custom-loader-wrapper .icon-comb {
+          bottom: 4px;
+          left: 13px;
+          color: #4edcff;
+          animation: floatB 3.2s ease-in-out infinite;
+        }
+
+        .custom-loader-wrapper .icon-mirror {
+          bottom: 17px;
+          right: 20px;
+          color: #b47cff;
+          animation: floatA 3.7s ease-in-out infinite;
+        }
+
+        @keyframes floatA {
+          0%, 100% { transform: translateY(0) rotate(0deg); }
+          50% { transform: translateY(-9px) rotate(5deg); }
+        }
+
+        @keyframes floatB {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(8px); }
+        }
+
+        .custom-loader-wrapper .brand {
+          font-size: clamp(32px, 6vw, 54px);
+          line-height: 1.05;
+          font-weight: 700;
+          letter-spacing: 4px;
+          color: #fff;
+          text-transform: uppercase;
+          text-shadow: 0 0 20px rgba(255,255,255,.08);
+        }
+
+        .custom-loader-wrapper .brand .gold {
+          background: linear-gradient(
+            90deg,
+            #ffd26a,
+            #fff0af,
+            #dca63e
+          );
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        .custom-loader-wrapper .subtitle {
+          margin-top: 12px;
+          font-size: clamp(14px, 2.5vw, 19px);
+          letter-spacing: 5px;
+          color: #d0c9db;
+          text-transform: uppercase;
+        }
+
+        .custom-loader-wrapper .tagline {
+          margin-top: 13px;
+          font-size: 14px;
+          color: #9891a5;
+          letter-spacing: 2px;
+        }
+
+        .custom-loader-wrapper .loading-box {
+          width: min(330px, 75%);
+          margin: 35px auto 0;
+        }
+
+        .custom-loader-wrapper .track {
+          height: 4px;
+          width: 100%;
+          border-radius: 999px;
+          overflow: hidden;
+          background: rgba(255,255,255,.08);
+        }
+
+        .custom-loader-wrapper .progress {
+          height: 100%;
+          border-radius: 999px;
+          background: linear-gradient(
+            90deg,
+            #ff2e93,
+            #b046ff,
+            #20d8ff,
+            #ffd36b
+          );
+          box-shadow: 0 0 15px rgba(255,44,150,.55);
+          transition: width .08s linear;
+        }
+
+        .custom-loader-wrapper .loading-info {
+          margin-top: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          font-size: 11px;
+          letter-spacing: 2px;
+          color: #8e8798;
+          text-transform: uppercase;
+        }
+
+        .custom-loader-wrapper .percent {
+          color: #ffd26a;
+          font-size: 12px;
+          font-weight: 600;
+        }
+
+        .custom-loader-wrapper .location {
+          position: absolute;
+          z-index: 5;
+          bottom: 26px;
+          left: 50%;
+          transform: translateX(-50%);
+          white-space: nowrap;
+          font-size: 12px;
+          letter-spacing: 3px;
+          text-transform: uppercase;
+          color: #aaa3b3;
+        }
+
+        .custom-loader-wrapper .location span {
+          color: #ff5aa7;
+        }
+
+        @media(max-width: 600px) {
+          .custom-loader-wrapper .icon-stage {
+            width: 160px;
+            height: 160px;
+            margin-bottom: 24px;
+          }
+
+          .custom-loader-wrapper .center-icon {
+            width: 76px;
+            height: 76px;
+            border-radius: 23px;
+          }
+
+          .custom-loader-wrapper .service-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 13px;
+          }
+
+          .custom-loader-wrapper .service-icon svg {
+            width: 21px;
+            height: 21px;
+          }
+
+          .custom-loader-wrapper .brand {
+            letter-spacing: 2px;
+          }
+
+          .custom-loader-wrapper .subtitle {
+            letter-spacing: 3px;
+          }
+
+          .custom-loader-wrapper .tagline {
+            font-size: 12px;
+          }
+
+          .custom-loader-wrapper .location {
+            font-size: 9px;
+            letter-spacing: 2px;
+            bottom: 18px;
+          }
+        }
+      `}</style>
+
+      <div className={`custom-loader-wrapper loader ${isHide ? 'hide' : ''}`} id="loader">
+        {/* Background Glow */}
+        <div className="bg-orb orb1"></div>
+        <div className="bg-orb orb2"></div>
+        <div className="bg-orb orb3"></div>
+
+        <div className="loader-content">
+          {/* ICON AREA */}
+          <div className="icon-stage">
+            <div className="orbit"></div>
+            <div className="orbit2"></div>
+
+            {/* Scissors */}
+            <div className="service-icon icon-scissors">
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle cx="6" cy="7" r="2.5" stroke="currentColor" strokeWidth="1.8" />
+                <circle cx="6" cy="17" r="2.5" stroke="currentColor" strokeWidth="1.8" />
+                <path d="M8 8.5L19 19" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8" />
+                <path d="M8 15.5L19 5" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8" />
+              </svg>
+            </div>
+
+            {/* Lipstick */}
+            <div className="service-icon icon-lipstick">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M9 9h6v10H9z" stroke="currentColor" strokeWidth="1.8" />
+                <path d="M9 9h6l1.5-3H10.5L9 9Z" stroke="currentColor" strokeWidth="1.8" />
+                <path d="M10.5 6 12 3l1.5 3" stroke="currentColor" strokeWidth="1.8" />
+                <path d="M7 19h10" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8" />
+              </svg>
+            </div>
+
+            {/* Comb */}
+            <div className="service-icon icon-comb">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M5 5v14" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8" />
+                <path d="M5 6h14" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8" />
+                <path
+                  d="M7 6v4M10 6v4M13 6v4M16 6v4M19 6v4"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeWidth="1.8"
+                />
+              </svg>
+            </div>
+
+            {/* Mirror */}
+            <div className="service-icon icon-mirror">
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="10" r="6.5" stroke="currentColor" strokeWidth="1.8" />
+                <path d="M9 21h6" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8" />
+                <path d="M12 16.5V21" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8" />
+              </svg>
+            </div>
+
+            {/* Center */}
+            <div className="center-icon">
+              <svg viewBox="0 0 48 48" fill="none">
+                <defs>
+                  <linearGradient
+                    id="goldGradient"
+                    x1="0"
+                    y1="0"
+                    x2="48"
+                    y2="48"
+                    gradientUnits="userSpaceOnUse"
+                  >
+                    <stop stopColor="#FFF1A8" />
+                    <stop offset=".5" stopColor="#FFD15C" />
+                    <stop offset="1" stopColor="#C98A24" />
+                  </linearGradient>
+                </defs>
+
+                {/* Elegant HH / salon emblem */}
+                <path d="M15 13v22" stroke="url(#goldGradient)" strokeWidth="2.5" strokeLinecap="round" />
+                <path d="M33 13v22" stroke="url(#goldGradient)" strokeWidth="2.5" strokeLinecap="round" />
+                <path d="M15 24h18" stroke="url(#goldGradient)" strokeWidth="2.5" strokeLinecap="round" />
+
+                <path d="M20 13v22" stroke="url(#goldGradient)" strokeWidth="2" strokeLinecap="round" />
+                <path d="M28 13v22" stroke="url(#goldGradient)" strokeWidth="2" strokeLinecap="round" />
+              </svg>
             </div>
           </div>
 
-          {/* Progress footer info */}
-          <div className="flex justify-between items-center text-[11px] text-zinc-400 font-sans">
-            <span className="truncate pr-2 text-zinc-300 font-medium">
-              {currentStep.text}
-            </span>
-            <span className="font-mono tabular-nums text-amber-300 font-semibold shrink-0">
-              {Math.round(progress)}%
-            </span>
+          {/* BRAND */}
+          <div className="brand">
+            HEDONIC <span className="gold">UNISEX</span>
+          </div>
+
+          <div className="subtitle">Salon &amp; Beauty Studio</div>
+
+          <div className="tagline">Your Style • Your Beauty • Your Confidence</div>
+
+          {/* PROGRESS */}
+          <div className="loading-box">
+            <div className="track">
+              <div
+                className="progress"
+                id="progress"
+                style={{ width: `${progress}%` }}
+              ></div>
+            </div>
+
+            <div className="loading-info">
+              <span id="status">{statusText}</span>
+              <span className="percent" id="percent">{progress}%</span>
+            </div>
           </div>
         </div>
 
-        {/* Landmark & Trust Anchor */}
-        <div className="mt-7 pt-4 border-t border-zinc-800/60 w-full flex items-center justify-between text-[11px] text-zinc-400">
-          <div className="flex items-center gap-1 text-zinc-300">
-            <CheckCircle2 className="w-3.5 h-3.5 text-[#d4af37]" />
-            <span>4.4 ★ Google Verified</span>
-          </div>
-
-          <div className="flex items-center gap-1 text-zinc-400 font-medium">
-            <MapPin className="w-3.5 h-3.5 text-[#d4af37]" />
-            <span>Sita Complex, Maharajganj</span>
-          </div>
+        {/* LOCATION */}
+        <div className="location">
+          <span>●</span> Proudly Serving Maharajganj
         </div>
-
       </div>
-    </div>
+    </>
   );
 };
