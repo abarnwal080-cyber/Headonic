@@ -1,0 +1,8 @@
+{
+  "name": " Hedonic Unisex Salon",
+  "description": "Best unisex beauty and grooming salon in Maharajganj, Siwan, Bihar offering bridal makeup, haircuts, skincare, and beard styling.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
