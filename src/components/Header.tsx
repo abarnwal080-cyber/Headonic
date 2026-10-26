@@ -18,54 +18,19 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, onBookC
     { id: 'gallery', label: 'Gallery' },
     { id: 'videos', label: 'Videos' },
     { id: 'reviews', label: 'Reviews' },
+    { id: 'review-social', label: 'Rate & Review' },
     { id: 'contact', label: 'Contact' },
   ];
 
   const handleNav = (id: string) => {
     setActiveTab(id);
     setMobileMenuOpen(false);
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
   };
 
   return (
     <>
-      {/* Top micro announcement bar */}
-      <div className="bg-[#12131a] border-b border-[#232530] text-xs py-1.5 px-4 text-zinc-400">
-        <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
-          <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1.5 text-amber-400/90 font-medium">
-              <MapPin className="w-3.5 h-3.5 text-[#d4af37]" />
-              Sita Complex, Maharajganj, Siwan (Near Reliance Trends Mart)
-            </span>
-            <span className="hidden md:inline-flex items-center gap-1">
-              <Clock className="w-3.5 h-3.5 text-zinc-500" />
-              9:00 AM – 9:00 PM (All 7 Days)
-            </span>
-          </div>
-
-          <div className="flex items-center gap-4 ml-auto">
-            <span className="inline-flex items-center gap-1 text-zinc-300 font-semibold">
-              <span className="text-[#d4af37]">★ 4.4</span> on Google
-            </span>
-            <a
-              href={SALON_INFO.instagramUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-pink-400 transition-colors flex items-center gap-1"
-              aria-label="Instagram"
-            >
-              <Instagram className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">500+ Family</span>
-            </a>
-          </div>
-        </div>
-      </div>
-
       {/* Main sticky navigation header */}
-      <header className="sticky top-0 z-40 bg-[#0b0c10]/95 backdrop-blur-md border-b border-[#252833] transition-all">
+      <header className="sticky top-0 z-40 bg-white/85 backdrop-blur-md border-b border-pink-200/50 shadow-sm transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
@@ -73,18 +38,16 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, onBookC
               onClick={() => handleNav('home')}
               className="flex items-center gap-3 text-left focus:outline-none group"
             >
-              <div className="w-11 h-11 rounded-full bg-gradient-to-tr from-[#99761a] via-[#d4af37] to-[#fbf0b8] p-[1.5px] shadow-lg shadow-amber-950/40">
-                <div className="w-full h-full rounded-full bg-[#0d0f14] flex items-center justify-center">
-                  <span className="font-serif text-lg font-bold text-[#d4af37] tracking-wider group-hover:scale-105 transition-transform">
-                    H
-                  </span>
-                </div>
-              </div>
+              <img
+                src={SALON_INFO.logoUrl}
+                alt="Hedonic Unisex Salon Logo"
+                className="w-11 h-11 rounded-full shadow-md shadow-pink-900/10 group-hover:scale-105 transition-transform object-cover border border-amber-200"
+              />
               <div>
-                <span className="font-serif text-xl sm:text-2xl font-bold tracking-tight text-white block">
+                <span className="font-serif text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 block">
                   Hedonic <span className="gold-gradient-text">Unisex Salon</span>
                 </span>
-                <span className="text-[10px] sm:text-xs tracking-[0.2em] uppercase text-zinc-400 block -mt-1 font-medium">
+                <span className="text-[10px] sm:text-xs tracking-[0.2em] uppercase text-zinc-500 block -mt-1 font-medium">
                   Maharajganj • Siwan
                 </span>
               </div>
@@ -96,10 +59,10 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, onBookC
                 <button
                   key={item.id}
                   onClick={() => handleNav(item.id)}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-all ${
+                  className={`px-3 py-2 rounded-full text-sm font-medium transition-all ${
                     activeTab === item.id
-                      ? 'text-[#d4af37] bg-white/5 border border-[#d4af37]/30'
-                      : 'text-zinc-300 hover:text-white hover:bg-white/[0.04]'
+                      ? 'text-[#8b6508] bg-pink-100/70 border border-[#d4af37]/50 font-semibold'
+                      : 'text-zinc-700 hover:text-purple-900 hover:bg-pink-50/60'
                   }`}
                 >
                   {item.label}
@@ -111,15 +74,15 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, onBookC
             <div className="hidden sm:flex items-center gap-3">
               <a
                 href={`tel:${SALON_INFO.phoneClean}`}
-                className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-zinc-200 border border-zinc-700/80 rounded-full hover:border-[#d4af37] hover:text-[#d4af37] transition-all"
+                className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-zinc-700 border border-pink-200 bg-white/80 rounded-full hover:border-[#d4af37] hover:text-[#8b6508] transition-all shadow-sm"
               >
-                <Phone className="w-3.5 h-3.5 text-[#d4af37]" />
+                <Phone className="w-3.5 h-3.5 text-[#b8860b]" />
                 <span>Call Now</span>
               </a>
 
               <button
                 onClick={onBookClick}
-                className="relative group overflow-hidden flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-full bg-gradient-to-r from-[#b88c1b] via-[#d4af37] to-[#e4c45a] text-black shadow-md shadow-amber-900/30 hover:brightness-110 active:scale-95 transition-all"
+                className="relative group overflow-hidden flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-full bg-gradient-to-r from-[#b88c1b] via-[#d4af37] to-[#e4c45a] text-black shadow-md shadow-amber-900/20 hover:brightness-105 active:scale-95 transition-all cursor-pointer"
               >
                 <Sparkles className="w-3.5 h-3.5 text-black" />
                 <span>Book Appointment</span>
@@ -130,14 +93,14 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, onBookC
             <div className="flex sm:hidden items-center gap-2">
               <button
                 onClick={onBookClick}
-                className="px-2.5 py-1.5 text-xs font-medium rounded-full bg-[#d4af37] text-black flex items-center gap-1"
+                className="px-2.5 py-1.5 text-xs font-medium rounded-full bg-[#d4af37] text-black flex items-center gap-1 font-semibold"
               >
                 <Calendar className="w-3 h-3" />
                 <span>Book</span>
               </button>
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 text-zinc-300 hover:text-white rounded-lg hover:bg-zinc-800"
+                className="p-2 text-zinc-700 hover:text-zinc-900 rounded-lg hover:bg-pink-50"
                 aria-label="Toggle navigation menu"
               >
                 {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -148,7 +111,7 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, onBookC
 
         {/* Mobile menu drawer */}
         {mobileMenuOpen && (
-          <div className="lg:hidden bg-[#0d0f14] border-b border-[#252833] px-4 pt-2 pb-6 space-y-2 animate-fadeIn">
+          <div className="lg:hidden bg-white/95 backdrop-blur-md border-b border-pink-200 px-4 pt-2 pb-6 space-y-2 animate-fadeIn shadow-lg">
             <div className="grid grid-cols-2 gap-2 pt-2 pb-3">
               {navItems.map((item) => (
                 <button
@@ -156,8 +119,8 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, onBookC
                   onClick={() => handleNav(item.id)}
                   className={`text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                     activeTab === item.id
-                      ? 'bg-[#d4af37]/15 text-[#d4af37] border border-[#d4af37]/40'
-                      : 'text-zinc-300 hover:bg-zinc-800/60'
+                      ? 'bg-pink-100/80 text-[#8b6508] border border-[#d4af37]/40 font-semibold'
+                      : 'text-zinc-700 hover:bg-pink-50'
                   }`}
                 >
                   {item.label}
@@ -165,13 +128,13 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, onBookC
               ))}
             </div>
 
-            <div className="pt-2 border-t border-zinc-800/80 flex flex-col gap-2.5">
+            <div className="pt-2 border-t border-pink-100 flex flex-col gap-2.5">
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
                   onBookClick();
                 }}
-                className="w-full py-2.5 px-4 text-center rounded-xl bg-gradient-to-r from-[#c69a23] via-[#d4af37] to-[#e4c45a] text-black font-semibold text-sm flex items-center justify-center gap-2 shadow-lg"
+                className="w-full py-2.5 px-4 text-center rounded-xl bg-gradient-to-r from-[#c69a23] via-[#d4af37] to-[#e4c45a] text-black font-semibold text-sm flex items-center justify-center gap-2 shadow-md"
               >
                 <Calendar className="w-4 h-4" />
                 Book Your Slot
@@ -179,9 +142,9 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, onBookC
 
               <a
                 href={`tel:${SALON_INFO.phoneClean}`}
-                className="w-full py-2.5 px-4 text-center rounded-xl border border-zinc-700 text-zinc-200 font-medium text-sm flex items-center justify-center gap-2 hover:border-[#d4af37]"
+                className="w-full py-2.5 px-4 text-center rounded-xl border border-pink-200 text-zinc-700 font-medium text-sm flex items-center justify-center gap-2 hover:border-[#d4af37] bg-white/80"
               >
-                <Phone className="w-4 h-4 text-[#d4af37]" />
+                <Phone className="w-4 h-4 text-[#b8860b]" />
                 Call +91 70434 32122
               </a>
             </div>

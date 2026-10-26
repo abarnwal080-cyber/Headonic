@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { CLIENT_REVIEWS } from '../data/salonData';
 
-export const ReviewsSection: React.FC = () => {
+interface ReviewsSectionProps {
+  onOpenReviewSocial?: () => void;
+}
+
+export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ onOpenReviewSocial }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
@@ -26,44 +30,43 @@ export const ReviewsSection: React.FC = () => {
   const currentReview = CLIENT_REVIEWS[currentIndex];
 
   return (
-    <section id="reviews" className="py-14 sm:py-20 bg-[#0b0c10] border-b border-[#1f222b]">
+    <section id="reviews" className="py-14 sm:py-20 relative">
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         
         {/* Simple Section Title */}
         <div className="text-center mb-8">
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-white tracking-wide">
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-zinc-900 tracking-wide">
             Client Reviews
           </h2>
         </div>
 
         {/* ================= SIMPLE REVIEW CARD ================= */}
-        {/* Request: "Reviews ko simple just review and 5 stars and name and verified tick svg" */}
         <div
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
-          className="relative rounded-3xl bg-[#12141c] border border-[#d4af37]/40 p-6 sm:p-10 shadow-2xl text-center space-y-5"
+          className="relative rounded-3xl bg-white/85 backdrop-blur-md border border-pink-200/90 p-6 sm:p-10 shadow-xl shadow-purple-950/5 text-center space-y-5"
         >
-          {/* 1. Exactly 5 Golden Stars */}
-          <div className="flex items-center justify-center gap-1 text-[#d4af37]">
+          {/* 1. Exactly 5 Vibrant Golden Stars */}
+          <div className="flex items-center justify-center gap-1.5 text-amber-400">
             {[...Array(5)].map((_, i) => (
-              <Star key={i} className="w-5 h-5 fill-[#d4af37] text-[#d4af37]" />
+              <Star key={i} className="w-5 h-5 fill-amber-400 text-amber-400 filter drop-shadow-xs" />
             ))}
           </div>
 
-          {/* 2. Just Review */}
-          <p className="font-serif text-base sm:text-lg text-zinc-200 italic leading-relaxed max-w-xl mx-auto min-h-[72px] flex items-center justify-center">
+          {/* 2. Just Review styled in Amaranth Bold as requested */}
+          <p className="font-amaranth font-bold text-lg sm:text-xl text-zinc-900 leading-relaxed max-w-xl mx-auto min-h-[72px] flex items-center justify-center tracking-wide">
             "{currentReview.comment}"
           </p>
 
-          {/* 3. Name and Verified Tick SVG */}
+          {/* 3. Name and Vibrant Verified Tick SVG */}
           <div className="flex items-center justify-center gap-2 pt-2">
-            <span className="font-semibold text-sm sm:text-base text-white tracking-wide">
+            <span className="font-bold text-sm sm:text-base text-zinc-900 tracking-wide font-amaranth">
               {currentReview.author}
             </span>
 
-            {/* Verified Tick SVG */}
+            {/* Vibrant Verified Tick SVG */}
             <svg
-              className="w-4 h-4 text-emerald-400 shrink-0 inline-block fill-current"
+              className="w-4 h-4 text-emerald-500 shrink-0 inline-block fill-current filter drop-shadow-xs"
               viewBox="0 0 20 20"
               aria-label="Verified Client"
             >
@@ -79,7 +82,7 @@ export const ReviewsSection: React.FC = () => {
           <div className="pt-4 flex items-center justify-center gap-4">
             <button
               onClick={handlePrev}
-              className="w-8 h-8 rounded-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+              className="w-8 h-8 rounded-full bg-pink-100/90 hover:bg-pink-200 text-zinc-700 hover:text-black flex items-center justify-center transition-colors cursor-pointer"
               aria-label="Previous review"
             >
               <ChevronLeft className="w-4 h-4" />
@@ -91,7 +94,7 @@ export const ReviewsSection: React.FC = () => {
                   key={idx}
                   onClick={() => setCurrentIndex(idx)}
                   className={`h-1.5 rounded-full transition-all cursor-pointer ${
-                    currentIndex === idx ? 'w-6 bg-[#d4af37]' : 'w-2 bg-zinc-700 hover:bg-zinc-500'
+                    currentIndex === idx ? 'w-6 bg-[#d4af37]' : 'w-2 bg-pink-300 hover:bg-pink-400'
                   }`}
                   aria-label={`Slide to review ${idx + 1}`}
                 />
@@ -100,13 +103,26 @@ export const ReviewsSection: React.FC = () => {
 
             <button
               onClick={handleNext}
-              className="w-8 h-8 rounded-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+              className="w-8 h-8 rounded-full bg-pink-100/90 hover:bg-pink-200 text-zinc-700 hover:text-black flex items-center justify-center transition-colors cursor-pointer"
               aria-label="Next review"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
         </div>
+
+        {/* Give Review on Google CTA */}
+        {onOpenReviewSocial && (
+          <div className="mt-6 text-center">
+            <button
+              onClick={onOpenReviewSocial}
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white hover:bg-amber-50 text-amber-900 border border-amber-300 text-xs sm:text-sm font-semibold shadow-xs hover:shadow-md transition-all cursor-pointer"
+            >
+              <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
+              <span>Give Review on Google / Follow on Instagram</span>
+            </button>
+          </div>
+        )}
 
       </div>
     </section>

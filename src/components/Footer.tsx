@@ -10,53 +10,61 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onNavClick, onBookClick, onReplayIntro }) => {
   return (
-    <footer className="bg-[#08090d] border-t border-[#1f222b] text-zinc-400 text-xs pt-16 pb-12">
+    <footer className="bg-white/80 backdrop-blur-md border-t border-pink-200/80 text-zinc-600 text-xs pt-16 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Main 4-column footer */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-10 pb-12 border-b border-zinc-800">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-10 pb-12 border-b border-pink-200/70">
           
           {/* Col 1 & 2: Brand Story & Trust Badges */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#99761a] via-[#d4af37] to-[#fbf0b8] p-[1.5px]">
-                <div className="w-full h-full rounded-full bg-[#0d0f14] flex items-center justify-center">
-                  <span className="font-serif text-base font-bold text-[#d4af37]">H</span>
-                </div>
-              </div>
+              <img
+                src={SALON_INFO.logoUrl}
+                alt="Hedonic Unisex Salon Logo"
+                className="w-10 h-10 rounded-full shadow-sm object-cover border border-amber-200"
+              />
               <div>
-                <span className="font-serif text-xl font-bold text-white block">
+                <span className="font-serif text-xl font-bold text-zinc-900 block">
                   Hedonic <span className="gold-gradient-text">Unisex Salon</span>
                 </span>
-                <span className="text-[10px] tracking-widest uppercase text-zinc-400">
+                <span className="text-[10px] tracking-widest uppercase text-zinc-500">
                   Maharajganj, Siwan, Bihar
                 </span>
               </div>
             </div>
 
-            <p className="text-zinc-400 leading-relaxed pr-4 text-xs">
+            <p className="text-zinc-600 leading-relaxed pr-4 text-xs">
               Premier beauty, bridal, and grooming center in Maharajganj, Siwan. Certified hair styling, HD bridal transformations, facial aesthetics, and classic barbershop shaves for both ladies and gentlemen.
             </p>
 
             {/* Badges in footer */}
             <div className="flex flex-wrap items-center gap-2 pt-1">
-              <span className="inline-flex items-center gap-1 bg-amber-500/10 text-amber-300 border border-amber-500/30 px-2.5 py-1 rounded-full text-[11px] font-semibold">
-                <Star className="w-3 h-3 fill-[#d4af37] text-[#d4af37]" />
-                4.4 Rating on Google
-              </span>
-              <span className="inline-flex items-center gap-1 bg-zinc-800 text-zinc-300 px-2.5 py-1 rounded-full text-[11px]">
+              <button
+                onClick={() => onNavClick('review-social')}
+                className="inline-flex items-center gap-1 bg-amber-500/15 text-amber-900 hover:bg-amber-500/25 border border-amber-300 px-2.5 py-1 rounded-full text-[11px] font-bold shadow-xs cursor-pointer transition-colors"
+              >
+                <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+                5/5 Rating on Google
+              </button>
+              <span className="inline-flex items-center gap-1 bg-purple-100 text-purple-900 border border-purple-200 px-2.5 py-1 rounded-full text-[11px] font-semibold">
                 1k+ Happy Clients
               </span>
-              <span className="inline-flex items-center gap-1 bg-pink-500/10 text-pink-300 border border-pink-500/30 px-2.5 py-1 rounded-full text-[11px]">
-                <Instagram className="w-3 h-3" />
+              <a
+                href={SALON_INFO.instagramUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 bg-pink-100 text-pink-900 hover:bg-pink-200 border border-pink-200 px-2.5 py-1 rounded-full text-[11px] font-semibold transition-colors"
+              >
+                <Instagram className="w-3.5 h-3.5 text-pink-600" />
                 500+ Insta Fam
-              </span>
+              </a>
             </div>
           </div>
 
           {/* Col 3: Quick Navigation */}
           <div className="space-y-3">
-            <h4 className="font-serif text-sm font-bold text-white uppercase tracking-wider">
+            <h4 className="font-serif text-sm font-bold text-zinc-900 uppercase tracking-wider">
               Quick Links
             </h4>
             <ul className="space-y-2">
@@ -105,7 +113,16 @@ export const Footer: React.FC<FooterProps> = ({ onNavClick, onBookClick, onRepla
                   onClick={() => onNavClick('reviews')}
                   className="hover:text-[#d4af37] transition-colors cursor-pointer"
                 >
-                  Customer Reviews (4.4★)
+                  Customer Reviews (5/5★)
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => onNavClick('review-social')}
+                  className="hover:text-[#d4af37] text-amber-700 font-semibold transition-colors cursor-pointer flex items-center gap-1"
+                >
+                  <Star className="w-3 h-3 fill-amber-500 text-amber-500" />
+                  Rate & Review Us (Google / Insta)
                 </button>
               </li>
               <li>
@@ -121,10 +138,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavClick, onBookClick, onRepla
 
           {/* Col 4: Top Services */}
           <div className="space-y-3">
-            <h4 className="font-serif text-sm font-bold text-white uppercase tracking-wider">
+            <h4 className="font-serif text-sm font-bold text-zinc-900 uppercase tracking-wider">
               Popular Services
             </h4>
-            <ul className="space-y-2 text-zinc-400">
+            <ul className="space-y-2 text-zinc-600">
               <li>• HD & Airbrush Bridal Makeup</li>
               <li>• Keratin & Protein Smoothening</li>
               <li>• Hydrafacial & Diamond Facials</li>
@@ -138,26 +155,26 @@ export const Footer: React.FC<FooterProps> = ({ onNavClick, onBookClick, onRepla
 
           {/* Col 5: Contact & Timings */}
           <div className="space-y-3">
-            <h4 className="font-serif text-sm font-bold text-white uppercase tracking-wider">
+            <h4 className="font-serif text-sm font-bold text-zinc-900 uppercase tracking-wider">
               Salon Location & Hours
             </h4>
             <div className="space-y-2">
-              <p className="flex items-start gap-2 text-zinc-300">
-                <MapPin className="w-4 h-4 text-[#d4af37] shrink-0 mt-0.5" />
+              <p className="flex items-start gap-2 text-zinc-700">
+                <MapPin className="w-4 h-4 text-pink-600 shrink-0 mt-0.5" />
                 <span>
                   1st Floor, Sita Complex, Maharajganj - Duraundha Rd, Near Reliance Trends Mart, Sihauta Bazar, Siwan, Bihar - 841238
                 </span>
               </p>
 
-              <p className="flex items-center gap-2 text-zinc-300">
-                <Phone className="w-4 h-4 text-[#d4af37] shrink-0" />
-                <a href={`tel:${SALON_INFO.phoneClean}`} className="hover:text-[#d4af37]">
+              <p className="flex items-center gap-2 text-zinc-700">
+                <Phone className="w-4 h-4 text-purple-600 shrink-0" />
+                <a href={`tel:${SALON_INFO.phoneClean}`} className="hover:text-purple-800 font-semibold">
                   {SALON_INFO.mobile}
                 </a>
               </p>
 
-              <p className="flex items-center gap-2 text-zinc-300">
-                <Clock className="w-4 h-4 text-[#d4af37] shrink-0" />
+              <p className="flex items-center gap-2 text-zinc-700">
+                <Clock className="w-4 h-4 text-pink-600 shrink-0" />
                 <span>9:00 AM – 9:00 PM (All 7 Days)</span>
               </p>
 
@@ -166,7 +183,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavClick, onBookClick, onRepla
                   href={SALON_INFO.instagramUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 rounded-lg bg-zinc-800 hover:bg-pink-600 hover:text-white text-zinc-300 transition-colors"
+                  className="p-2 rounded-lg bg-pink-100 hover:bg-pink-600 hover:text-white text-pink-700 transition-colors"
                   aria-label="Instagram"
                 >
                   <Instagram className="w-4 h-4" />
@@ -176,7 +193,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavClick, onBookClick, onRepla
                   href={SALON_INFO.googleMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 rounded-lg bg-zinc-800 hover:bg-[#d4af37] hover:text-black text-zinc-300 transition-colors"
+                  className="p-2 rounded-lg bg-purple-100 hover:bg-purple-600 hover:text-white text-purple-700 transition-colors"
                   aria-label="Google Maps"
                 >
                   <Navigation className="w-4 h-4" />
@@ -193,21 +210,21 @@ export const Footer: React.FC<FooterProps> = ({ onNavClick, onBookClick, onRepla
             © {new Date().getFullYear()} Hedonic Unisex Salon. All rights reserved. Maharajganj, Siwan, Bihar.
           </div>
           <div className="flex flex-wrap items-center gap-4">
-            <span className="text-zinc-400">Certified Unisex Beauty Parlour</span>
+            <span className="text-zinc-600 font-medium">Certified Unisex Beauty Parlour</span>
             <span>•</span>
             {onReplayIntro && (
               <>
                 <button
                   onClick={onReplayIntro}
-                  className="text-zinc-400 hover:text-[#d4af37] transition-colors cursor-pointer flex items-center gap-1"
+                  className="text-purple-700 hover:text-purple-900 font-medium transition-colors cursor-pointer flex items-center gap-1"
                 >
-                  <Sparkles className="w-3 h-3 text-[#d4af37]" />
+                  <Sparkles className="w-3 h-3 text-pink-600" />
                   <span>Replay Intro</span>
                 </button>
                 <span>•</span>
               </>
             )}
-            <button onClick={onBookClick} className="text-[#d4af37] hover:underline cursor-pointer">
+            <button onClick={onBookClick} className="text-[#8b6508] font-bold hover:underline cursor-pointer">
               Book Appointment Now
             </button>
           </div>

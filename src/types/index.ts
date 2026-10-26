@@ -40,6 +40,7 @@ export interface SalonVideo {
   caption: string;
   tag: string;
   duration?: string;
+  vimeoId?: string;
 }
 
 export interface Review {

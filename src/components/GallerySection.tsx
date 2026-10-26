@@ -5,9 +5,10 @@ import { GalleryImage } from '../types';
 
 interface GallerySectionProps {
   onBookClick: (prefillNote?: string) => void;
+  onOpenFullGallery: () => void;
 }
 
-export const GallerySection: React.FC<GallerySectionProps> = ({ onBookClick }) => {
+export const GallerySection: React.FC<GallerySectionProps> = ({ onBookClick, onOpenFullGallery }) => {
   // Mode: 'carousel' (very small frames carousel) or 'full' (full grid view)
   const [viewMode, setViewMode] = useState<'carousel' | 'full'>('carousel');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -69,30 +70,30 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onBookClick }) =
     lightboxIndex !== null ? filteredImages[lightboxIndex] : null;
 
   return (
-    <section id="gallery" className="py-16 sm:py-24 bg-[#0b0c10] border-b border-[#1f222b]">
+    <section id="gallery" className="py-16 sm:py-24 bg-transparent border-b border-pink-200/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-[#d4af37]/30 text-[#d4af37] text-xs font-semibold uppercase tracking-wider mb-3">
-            <Sparkles className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/80 backdrop-blur-md border border-pink-200 text-amber-800 text-xs font-semibold uppercase tracking-wider mb-3 shadow-sm">
+            <Sparkles className="w-3.5 h-3.5 text-[#b8860b]" />
             Portfolio & Salon Moments
           </div>
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-3">
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-zinc-900 mb-3">
             Our Work Gallery
           </h2>
-          <p className="text-zinc-400 text-sm sm:text-base leading-relaxed">
+          <p className="text-zinc-600 text-sm sm:text-base leading-relaxed">
             Real clients, precision fades, royal bridal makeovers, and luxury salon interior in Maharajganj.
           </p>
 
           {/* VIEW SWITCH TABS (Carousel in Very Small Frames vs Full Gallery) */}
-          <div className="mt-6 inline-flex p-1 rounded-full bg-[#151722] border border-zinc-800 shadow-xl">
+          <div className="mt-6 inline-flex p-1 rounded-full bg-white/90 border border-pink-200 shadow-md">
             <button
               onClick={() => setViewMode('carousel')}
               className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
                 viewMode === 'carousel'
                   ? 'bg-gradient-to-r from-[#b78b1a] to-[#d4af37] text-black shadow-md'
-                  : 'text-zinc-400 hover:text-white'
+                  : 'text-zinc-600 hover:text-zinc-900'
               }`}
             >
               <Layers className="w-4 h-4" />
@@ -104,7 +105,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onBookClick }) =
               className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
                 viewMode === 'full'
                   ? 'bg-gradient-to-r from-[#b78b1a] to-[#d4af37] text-black shadow-md'
-                  : 'text-zinc-400 hover:text-white'
+                  : 'text-zinc-600 hover:text-zinc-900'
               }`}
             >
               <Grid className="w-4 h-4" />
@@ -121,32 +122,32 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onBookClick }) =
             className="space-y-6 animate-fadeIn"
           >
             {/* Auto-sliding Carousel of Very Small Frames */}
-            <div className="relative bg-[#12141c] border border-zinc-800/80 rounded-3xl p-4 sm:p-6 shadow-2xl">
+            <div className="relative bg-white/85 backdrop-blur-xl border border-pink-200/80 rounded-3xl p-4 sm:p-6 shadow-xl shadow-purple-900/5">
               <div className="flex items-center justify-between mb-4 px-2">
-                <span className="text-xs text-zinc-400 font-medium">
+                <span className="text-xs text-zinc-600 font-semibold">
                   Auto-sliding Miniature Showcase ({ALL_GALLERY_IMAGES.length} Photos)
                 </span>
                 
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handlePrevCarousel}
-                    className="w-8 h-8 rounded-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 flex items-center justify-center cursor-pointer"
+                    className="w-8 h-8 rounded-full bg-pink-100 hover:bg-pink-200 text-zinc-800 flex items-center justify-center cursor-pointer transition-colors shadow-sm"
                     aria-label="Previous image"
                   >
                     <ChevronLeft className="w-4 h-4" />
                   </button>
                   <button
                     onClick={handleNextCarousel}
-                    className="w-8 h-8 rounded-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 flex items-center justify-center cursor-pointer"
+                    className="w-8 h-8 rounded-full bg-pink-100 hover:bg-pink-200 text-zinc-800 flex items-center justify-center cursor-pointer transition-colors shadow-sm"
                     aria-label="Next image"
                   >
                     <ChevronRight className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => setIsPaused(!isPaused)}
-                    className="text-[11px] text-zinc-400 hover:text-white px-2 py-1 flex items-center gap-1 ml-1"
+                    className="text-[11px] text-zinc-600 hover:text-zinc-900 px-2 py-1 flex items-center gap-1 ml-1"
                   >
-                    {isPaused ? <Play className="w-3 h-3 text-[#d4af37]" /> : <Pause className="w-3 h-3" />}
+                    {isPaused ? <Play className="w-3 h-3 text-[#b8860b]" /> : <Pause className="w-3 h-3" />}
                     <span>{isPaused ? 'Resume' : 'Pause'}</span>
                   </button>
                 </div>
@@ -164,7 +165,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onBookClick }) =
                         setSelectedCategory('all');
                         setLightboxIndex(imgIdx);
                       }}
-                      className="group relative aspect-square rounded-xl overflow-hidden bg-zinc-950 border border-zinc-800 hover:border-[#d4af37] cursor-pointer transition-all duration-300 hover:scale-105 shadow-md"
+                      className="group relative aspect-square rounded-xl overflow-hidden bg-pink-50 border border-pink-200 hover:border-[#d4af37] cursor-pointer transition-all duration-300 hover:scale-105 shadow-sm"
                       title={img.title}
                     >
                       <img
@@ -185,17 +186,17 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onBookClick }) =
               </div>
 
               {/* Feature highlight for active miniature */}
-              <div className="mt-4 pt-3 border-t border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-                <span className="text-zinc-300">
+              <div className="mt-4 pt-3 border-t border-pink-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                <span className="text-zinc-700">
                   Currently focused:{' '}
-                  <strong className="text-[#d4af37]">
+                  <strong className="text-[#8b6508]">
                     {ALL_GALLERY_IMAGES[carouselIndex]?.title}
                   </strong>
                 </span>
 
                 <button
-                  onClick={() => setViewMode('full')}
-                  className="px-4 py-1.5 rounded-full bg-[#d4af37]/20 border border-[#d4af37]/40 text-[#d4af37] font-semibold hover:bg-[#d4af37] hover:text-black transition-all cursor-pointer flex items-center gap-1.5"
+                  onClick={onOpenFullGallery}
+                  className="px-5 py-2 rounded-full bg-gradient-to-r from-[#b78b1a] via-[#d4af37] to-[#e4c45a] text-black font-bold text-xs shadow-md hover:brightness-105 active:scale-95 transition-all cursor-pointer flex items-center gap-1.5"
                 >
                   <Grid className="w-3.5 h-3.5" />
                   <span>Click to View Full Gallery</span>
@@ -219,8 +220,8 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onBookClick }) =
                   }}
                   className={`px-3.5 sm:px-4 py-2 rounded-full text-xs font-semibold transition-all cursor-pointer ${
                     selectedCategory === cat.id
-                      ? 'bg-[#d4af37] text-black shadow-lg shadow-amber-950/40'
-                      : 'bg-[#151722] text-zinc-400 hover:text-white border border-[#252835]'
+                      ? 'bg-[#d4af37] text-black shadow-md shadow-pink-300/40'
+                      : 'bg-white/80 text-zinc-700 hover:text-purple-900 border border-pink-200 shadow-sm'
                   }`}
                 >
                   {cat.label}
@@ -234,7 +235,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ onBookClick }) =
                 <div
                   key={img.id}
                   onClick={() => setLightboxIndex(index)}
-                  className="group relative aspect-square rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 hover:border-[#d4af37] cursor-pointer transition-all duration-300 shadow-md"
+                  className="group relative aspect-square rounded-2xl overflow-hidden bg-white/90 border border-pink-200 hover:border-[#d4af37] cursor-pointer transition-all duration-300 shadow-md"
                 >
                   <img
                     src={img.url}

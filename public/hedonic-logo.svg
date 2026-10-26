@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="goldSheen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF4B8" />
+      <stop offset="30%" stop-color="#FFD700" />
+      <stop offset="65%" stop-color="#D49A24" />
+      <stop offset="100%" stop-color="#8C5806" />
+    </linearGradient>
+    <linearGradient id="darkBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#181324" />
+      <stop offset="50%" stop-color="#0f0c18" />
+      <stop offset="100%" stop-color="#07050d" />
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffd700" stop-opacity="0.35" />
+      <stop offset="70%" stop-color="#ff7a00" stop-opacity="0.1" />
+      <stop offset="100%" stop-color="#ff7a00" stop-opacity="0" />
+    </radialGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.5" />
+    </filter>
+  </defs>
+
+  <!-- Background circle with subtle glow -->
+  <circle cx="256" cy="256" r="248" fill="url(#darkBg)" />
+  <circle cx="256" cy="256" r="240" fill="url(#glow)" />
+
+  <!-- Outer Golden Luxury Rings -->
+  <circle cx="256" cy="256" r="236" fill="none" stroke="url(#goldSheen)" stroke-width="4" stroke-opacity="0.9" />
+  <circle cx="256" cy="256" r="226" fill="none" stroke="url(#goldSheen)" stroke-width="1.5" stroke-dasharray="4,6" stroke-opacity="0.75" />
+  <circle cx="256" cy="256" r="216" fill="none" stroke="url(#goldSheen)" stroke-width="2" stroke-opacity="0.85" />
+
+  <!-- Corner / Cardinal Accent Diamonds -->
+  <polygon points="256,26 261,36 256,46 251,36" fill="url(#goldSheen)" />
+  <polygon points="256,466 261,476 256,486 251,476" fill="url(#goldSheen)" />
+  <polygon points="26,256 36,251 46,256 36,261" fill="url(#goldSheen)" />
+  <polygon points="466,256 476,251 486,256 476,261" fill="url(#goldSheen)" />
+
+  <!-- Crown on Top -->
+  <g id="crown" transform="translate(0, -10)" filter="url(#shadow)">
+    <path d="M210,140 L230,170 L256,132 L282,170 L302,140 L292,185 L220,185 Z" fill="url(#goldSheen)" />
+    <circle cx="210" cy="136" r="4" fill="#FFF4B8" />
+    <circle cx="256" cy="128" r="5" fill="#FFF4B8" />
+    <circle cx="302" cy="136" r="4" fill="#FFF4B8" />
+  </g>
+
+  <!-- Stylized Royal H Emblem -->
+  <g id="h-emblem" filter="url(#shadow)">
+    <!-- Left Pillar -->
+    <path d="M185,195 L215,195 L215,340 L185,340 Z" fill="url(#goldSheen)" />
+    <polygon points="175,195 225,195 200,186" fill="url(#goldSheen)" />
+    <polygon points="175,340 225,340 200,349" fill="url(#goldSheen)" />
+
+    <!-- Right Pillar -->
+    <path d="M297,195 L327,195 L327,340 L297,340 Z" fill="url(#goldSheen)" />
+    <polygon points="287,195 337,195 312,186" fill="url(#goldSheen)" />
+    <polygon points="287,340 337,340 312,349" fill="url(#goldSheen)" />
+
+    <!-- Center Horizontal Crossbar with Scissors Motif -->
+    <path d="M210,256 L302,256" stroke="url(#goldSheen)" stroke-width="16" stroke-linecap="round" />
+    
+    <!-- Stylized Shears Overlay -->
+    <g transform="translate(256, 256) scale(0.95)">
+      <circle cx="0" cy="0" r="14" fill="#181324" stroke="url(#goldSheen)" stroke-width="3" />
+      <circle cx="0" cy="0" r="6" fill="#FFF4B8" />
+      <path d="M-35,-25 C-25,-10 -15,-5 0,0 C15,5 25,10 35,25" fill="none" stroke="url(#goldSheen)" stroke-width="3" stroke-linecap="round" opacity="0.6" />
+      <path d="M-35,25 C-25,10 -15,5 0,0 C15,-5 25,-10 35,-25" fill="none" stroke="url(#goldSheen)" stroke-width="3" stroke-linecap="round" opacity="0.6" />
+    </g>
+  </g>
+
+  <!-- Circular Text Arc Representation: HEDONIC UNISEX SALON -->
+  <text x="256" y="386" font-family="'Playfair Display', serif, 'Cinzel'" font-size="28" font-weight="800" fill="url(#goldSheen)" text-anchor="middle" letter-spacing="6">
+    HEDONIC
+  </text>
+  <text x="256" y="414" font-family="'Poppins', sans-serif" font-size="14" font-weight="600" fill="#FFF4B8" text-anchor="middle" letter-spacing="5">
+    UNISEX SALON
+  </text>
+  <text x="256" y="434" font-family="'Poppins', sans-serif" font-size="10" font-weight="500" fill="#D49A24" text-anchor="middle" letter-spacing="4">
+    MAHARAJGANJ • SIWAN
+  </text>
+</svg>

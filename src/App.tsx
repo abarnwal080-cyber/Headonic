@@ -16,6 +16,9 @@ import { FAQSection } from './components/FAQSection';
 import { Footer } from './components/Footer';
 import { FloatingCTAs } from './components/FloatingCTAs';
 import { ServiceSubpageView } from './components/ServiceSubpageView';
+import { AboutSubpageView } from './components/AboutSubpageView';
+import { GallerySubpageView } from './components/GallerySubpageView';
+import { ReviewSocialPage } from './components/ReviewSocialPage';
 import { TypeformBookingModal } from './components/TypeformBookingModal';
 import { ImageModal } from './components/ImageModal';
 import { PremiumLoader } from './components/PremiumLoader';
@@ -37,10 +40,16 @@ export default function App() {
     if (activeSubpage) {
       setActiveSubpage(null);
     }
+    if (id === 'about' || id === 'gallery' || id === 'review-social') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
     setTimeout(() => {
       const element = document.getElementById(id);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     }, 50);
   };
@@ -57,8 +66,32 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0b0c10] text-[#f4efe6] flex flex-col font-sans selection:bg-[#d4af37] selection:text-black">
+    <div className="min-h-screen bg-transparent text-[#1a1626] flex flex-col font-sans selection:bg-[#d4af37] selection:text-black relative">
       
+      {/* Background Animated Pink-White-Purple Ambiance Orbs */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
+        {/* Soft Pink Orb */}
+        <div
+          className="absolute -top-24 -left-20 w-[420px] sm:w-[580px] h-[420px] sm:h-[580px] rounded-full bg-[#fbcfe8]/50 blur-[120px]"
+          style={{ animation: 'floatOrb1 16s ease-in-out infinite' }}
+        />
+        {/* Soft Lavender Purple Orb */}
+        <div
+          className="absolute top-1/3 -right-24 w-[450px] sm:w-[620px] h-[450px] sm:h-[620px] rounded-full bg-[#e9d5ff]/50 blur-[130px]"
+          style={{ animation: 'floatOrb2 20s ease-in-out infinite' }}
+        />
+        {/* Luminous Pearl White & Soft Rose Glow */}
+        <div
+          className="absolute bottom-10 left-1/4 w-[380px] sm:w-[500px] h-[380px] sm:h-[500px] rounded-full bg-[#ffffff]/90 blur-[100px]"
+          style={{ animation: 'floatOrb3 15s ease-in-out infinite' }}
+        />
+        {/* Delicate Orchid Glow Accent */}
+        <div
+          className="absolute -bottom-20 right-1/4 w-[350px] sm:w-[480px] h-[350px] sm:h-[480px] rounded-full bg-[#f472b6]/25 blur-[130px]"
+          style={{ animation: 'floatOrb1 18s ease-in-out infinite reverse' }}
+        />
+      </div>
+
       {/* Premium Loader with Icons celebrating "Proud of Maharajganj" */}
       {showLoader && (
         <PremiumLoader
@@ -84,6 +117,24 @@ export default function App() {
             onBookService={(svc) => handleOpenBooking(svc)}
             onOpenImageModal={handleOpenImage}
           />
+        ) : activeTab === 'about' ? (
+          /* Dedicated About Us Subpage View (Removed from homepage as requested) */
+          <AboutSubpageView
+            onBack={() => navigateToSection('home')}
+            onBookClick={() => handleOpenBooking()}
+          />
+        ) : activeTab === 'gallery' ? (
+          /* Dedicated Gallery Subpage View (Opened upon clicking View Full Gallery) */
+          <GallerySubpageView
+            onBack={() => navigateToSection('home')}
+            onBookClick={(note) => handleOpenBooking(note)}
+          />
+        ) : activeTab === 'review-social' ? (
+          /* Dedicated Review & Social Hub: Salon Name + Logo on top, Google Review & Instagram buttons */
+          <ReviewSocialPage
+            onBack={() => navigateToSection('home')}
+            onBookClick={() => handleOpenBooking()}
+          />
         ) : (
           /* Main Homepage flow */
           <>
@@ -94,28 +145,26 @@ export default function App() {
                 onOpenImageModal={handleOpenImage}
               />
 
-              {/* Special requirement carousels:
-                  Female Services carousel (3 services) with 1:1 image auto-sliding every 1.5s with "Know More",
-                  followed by Male Services card (3 services) with 1:1 image auto-sliding every 1.5s.
-                  Clicking "Know More" opens the dedicated subpage view. */}
+              {/* Special requirement services:
+                  Female Services (Bridal Makeup on top, Hair & Skin horizontally below),
+                  followed by Male Services (Hair Care on top, Beard & Skin horizontally below).
+                  Images in 3:2 landscape and entire card is clickable! */}
               <SpecialHomeCarousels
                 onSelectSubpage={(subpage) => setActiveSubpage(subpage)}
               />
             </div>
 
-            {/* About Us Section: Narrative, Mission, Vision, Hygiene Standards (Duplicate exterior/interior images removed as requested) */}
-            <AboutSection
-              onBookClick={() => handleOpenBooking()}
+            {/* Gallery Section: Carousel with very small frames by default + Button opening full gallery subpage */}
+            <GallerySection
+              onBookClick={(note) => handleOpenBooking(note)}
+              onOpenFullGallery={() => navigateToSection('gallery')}
             />
 
-            {/* Gallery Section: Carousel with very small frames by default + Tab to view full gallery */}
-            <GallerySection onBookClick={(note) => handleOpenBooking(note)} />
-
-            {/* Auto-sliding Video Gallery Carousel with 6 Instagram reels, playback & theater view */}
+            {/* Auto-sliding Video Gallery Carousel with 6 Vimeo reels, fixed 9:16 aspect ratio & auto-advance */}
             <VideoGallerySection />
 
-            {/* Auto-sliding Reviews Carousel with Google Rating 4.4/5, verified reviews & link to Google listing */}
-            <ReviewsSection />
+            {/* Auto-sliding Reviews Carousel with 5/5 Google rating, verified reviews & link to Google listing */}
+            <ReviewsSection onOpenReviewSocial={() => navigateToSection('review-social')} />
 
             {/* Note: Homepage booking section removed. Replaced by left floating icon + Typeform interactive modal */}
 
