@@ -94,6 +94,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavClick, onBookClick, onRepla
               </li>
               <li>
                 <button
+                  onClick={() => onNavClick('pricing')}
+                  className="hover:text-[#d4af37] text-[#8b6508] font-bold transition-colors cursor-pointer"
+                >
+                  Pricing & Rate Card
+                </button>
+              </li>
+              <li>
+                <button
                   onClick={() => onNavClick('gallery')}
                   className="hover:text-[#d4af37] transition-colors cursor-pointer"
                 >

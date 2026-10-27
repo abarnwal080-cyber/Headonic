@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { HeroSection } from './components/HeroSection';
 import { SpecialHomeCarousels } from './components/SpecialHomeCarousels';
@@ -19,6 +19,7 @@ import { ServiceSubpageView } from './components/ServiceSubpageView';
 import { AboutSubpageView } from './components/AboutSubpageView';
 import { GallerySubpageView } from './components/GallerySubpageView';
 import { ReviewSocialPage } from './components/ReviewSocialPage';
+import { PricingPage } from './components/PricingPage';
 import { TypeformBookingModal } from './components/TypeformBookingModal';
 import { ImageModal } from './components/ImageModal';
 import { PremiumLoader } from './components/PremiumLoader';
@@ -36,15 +37,30 @@ export default function App() {
   const [isTypeformOpen, setIsTypeformOpen] = useState(false);
   const [prefilledService, setPrefilledService] = useState<string>('');
 
+  // Sync initial URL path if user lands on /pricing
+  useEffect(() => {
+    if (window.location.pathname === '/pricing') {
+      setActiveTab('pricing');
+    }
+  }, []);
+
   const navigateToSection = (id: string) => {
     setActiveTab(id);
     if (activeSubpage) {
       setActiveSubpage(null);
     }
-    if (id === 'about' || id === 'gallery' || id === 'review-social') {
+
+    if (id === 'pricing') {
+      window.history.pushState({}, '', '/pricing');
+    } else if (window.location.pathname === '/pricing') {
+      window.history.pushState({}, '', '/');
+    }
+
+    if (id === 'about' || id === 'gallery' || id === 'review-social' || id === 'pricing') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
+
     setTimeout(() => {
       const element = document.getElementById(id);
       if (element) {
@@ -67,31 +83,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-transparent text-[#1a1626] flex flex-col font-sans selection:bg-[#d4af37] selection:text-black relative">
-      
-      {/* Background Animated Pink-White-Purple Ambiance Orbs */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
-        {/* Soft Pink Orb */}
-        <div
-          className="absolute -top-24 -left-20 w-[420px] sm:w-[580px] h-[420px] sm:h-[580px] rounded-full bg-[#fbcfe8]/50 blur-[120px]"
-          style={{ animation: 'floatOrb1 16s ease-in-out infinite' }}
-        />
-        {/* Soft Lavender Purple Orb */}
-        <div
-          className="absolute top-1/3 -right-24 w-[450px] sm:w-[620px] h-[450px] sm:h-[620px] rounded-full bg-[#e9d5ff]/50 blur-[130px]"
-          style={{ animation: 'floatOrb2 20s ease-in-out infinite' }}
-        />
-        {/* Luminous Pearl White & Soft Rose Glow */}
-        <div
-          className="absolute bottom-10 left-1/4 w-[380px] sm:w-[500px] h-[380px] sm:h-[500px] rounded-full bg-[#ffffff]/90 blur-[100px]"
-          style={{ animation: 'floatOrb3 15s ease-in-out infinite' }}
-        />
-        {/* Delicate Orchid Glow Accent */}
-        <div
-          className="absolute -bottom-20 right-1/4 w-[350px] sm:w-[480px] h-[350px] sm:h-[480px] rounded-full bg-[#f472b6]/25 blur-[130px]"
-          style={{ animation: 'floatOrb1 18s ease-in-out infinite reverse' }}
-        />
-      </div>
+    <div className="min-h-screen bg-white text-[#222222] flex flex-col font-sans selection:bg-[#B89A60] selection:text-white relative">
 
       {/* Premium Loader with Icons celebrating "Proud of Maharajganj" */}
       {showLoader && (
@@ -108,8 +100,7 @@ export default function App() {
         onBookClick={() => handleOpenBooking()}
       />
 
-
-      <main className="flex-1">
+      <main className="flex-1 bg-white">
         {/* If a service subpage is selected, display the full dedicated Subpage View */}
         {activeSubpage ? (
           <ServiceSubpageView
@@ -118,20 +109,25 @@ export default function App() {
             onBookService={(svc) => handleOpenBooking(svc)}
             onOpenImageModal={handleOpenImage}
           />
+        ) : activeTab === 'pricing' ? (
+          /* Dedicated Premium Salon Pricing Subpage View */
+          <PricingPage
+            onOpenBooking={(svc) => handleOpenBooking(svc)}
+          />
         ) : activeTab === 'about' ? (
-          /* Dedicated About Us Subpage View (Removed from homepage as requested) */
+          /* Dedicated About Us Subpage View */
           <AboutSubpageView
             onBack={() => navigateToSection('home')}
             onBookClick={() => handleOpenBooking()}
           />
         ) : activeTab === 'gallery' ? (
-          /* Dedicated Gallery Subpage View (Opened upon clicking View Full Gallery) */
+          /* Dedicated Gallery Subpage View */
           <GallerySubpageView
             onBack={() => navigateToSection('home')}
             onBookClick={(note) => handleOpenBooking(note)}
           />
         ) : activeTab === 'review-social' ? (
-          /* Dedicated Review & Social Hub: Salon Name + Logo on top, Google Review & Instagram buttons */
+          /* Dedicated Review & Social Hub */
           <ReviewSocialPage
             onBack={() => navigateToSection('home')}
             onBookClick={() => handleOpenBooking()}
@@ -139,17 +135,14 @@ export default function App() {
         ) : (
           /* Main Homepage flow */
           <>
-            {/* Hero Section: Salon Name, Exterior & Interior side-by-side cute landscape frames maintained at the top, illustration icons, and badges */}
+            {/* Hero Section */}
             <div id="home">
               <HeroSection
                 onBookClick={() => handleOpenBooking()}
                 onOpenImageModal={handleOpenImage}
               />
 
-              {/* Special requirement services:
-                  Female Services (Bridal Makeup on top, Hair & Skin horizontally below),
-                  followed by Male Services (Hair Care on top, Beard & Skin horizontally below).
-                  Images in 3:2 landscape and entire card is clickable! */}
+              {/* Special requirement services */}
               <SpecialHomeCarousels
                 onSelectSubpage={(subpage) => setActiveSubpage(subpage)}
               />
@@ -158,24 +151,22 @@ export default function App() {
             {/* Meet the MUA ( Owner ) Section: Mr Amarjeet Kumar */}
             <MeetTheMUA onBookClick={(svc) => handleOpenBooking(svc)} />
 
-            {/* Gallery Section: Carousel with very small frames by default + Button opening full gallery subpage */}
+            {/* Gallery Section */}
             <GallerySection
               onBookClick={(note) => handleOpenBooking(note)}
               onOpenFullGallery={() => navigateToSection('gallery')}
             />
 
-            {/* Auto-sliding Video Gallery Carousel with 6 Vimeo reels, fixed 9:16 aspect ratio & auto-advance */}
+            {/* Auto-sliding Video Gallery Carousel with Vimeo reels */}
             <VideoGallerySection />
 
-            {/* Auto-sliding Reviews Carousel with 5/5 Google rating, verified reviews & link to Google listing */}
+            {/* Auto-sliding Reviews Carousel */}
             <ReviewsSection onOpenReviewSocial={() => navigateToSection('review-social')} />
-
-            {/* Note: Homepage booking section removed. Replaced by left floating icon + Typeform interactive modal */}
 
             {/* Frequently Asked Questions */}
             <FAQSection />
 
-            {/* Contact Section with address, hours, landmark, inquiry form, and Google Map */}
+            {/* Contact Section */}
             <ContactSection />
           </>
         )}
@@ -191,14 +182,14 @@ export default function App() {
       {/* Floating Buttons: Left floating Appointment button, Right floating WhatsApp & Call */}
       <FloatingCTAs onBookClick={() => handleOpenBooking()} />
 
-      {/* Typeform-style Step-by-Step Booking Questionnaire with WhatsApp popup at final step */}
+      {/* Typeform-style Step-by-Step Booking Questionnaire */}
       <TypeformBookingModal
         isOpen={isTypeformOpen}
         onClose={() => setIsTypeformOpen(false)}
         prefilledService={prefilledService}
       />
 
-      {/* Image Zoom / Lightbox Modal for venue and portfolio photos */}
+      {/* Image Zoom / Lightbox Modal */}
       <ImageModal
         url={modalImage ? modalImage.url : null}
         title={modalImage ? modalImage.title : ''}

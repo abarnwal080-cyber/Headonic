@@ -15,6 +15,7 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, onBookC
     { id: 'home', label: 'Home' },
     { id: 'about', label: 'About Us' },
     { id: 'services', label: 'Services' },
+    { id: 'pricing', label: 'Pricing' },
     { id: 'gallery', label: 'Gallery' },
     { id: 'videos', label: 'Videos' },
     { id: 'reviews', label: 'Reviews' },
