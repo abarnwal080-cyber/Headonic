@@ -59,7 +59,7 @@ export const AboutSubpageView: React.FC<AboutSubpageViewProps> = ({ onBack, onBo
         {/* Narrative & Description Section */}
         <div className="bg-white/85 backdrop-blur-md rounded-3xl p-6 sm:p-10 border border-pink-200/90 shadow-xl shadow-purple-950/5 space-y-6 text-zinc-700 text-sm sm:text-base leading-relaxed">
           <p>
-            Hedonic Unisex Salon is a premier beauty and grooming center situated at the heart of Maharajganj, Siwan, Bihar. Located in a prime commercial hotspot on the 1st Floor of Sita Complex (Maharajganj - Duraundha Road, Near Reliance Trends Mart and Bandhan Bank), we bridge cosmopolitan styling standards with warm, personalized Bihari hospitality.
+            Hedonic Unisex Salon is a premier beauty and grooming center situated at the heart of Maharajganj, Siwan, Bihar. Located in a prime commercial hotspot on the 1st Floor of Sita Complex (Maharajganj - Duraundha Road, Near Bandhan Bank), we bridge cosmopolitan styling standards with warm, personalized Bihari hospitality.
           </p>
 
           <p>
@@ -149,7 +149,7 @@ export const AboutSubpageView: React.FC<AboutSubpageViewProps> = ({ onBack, onBo
             </div>
             <div className="space-y-1">
               <h3 className="font-serif text-lg sm:text-xl font-bold text-zinc-900">
-                1st Floor, Sita Complex (Opp. Bandhan Bank / Near Reliance Trends Mart)
+                1st Floor, Sita Complex (Opp. Bandhan Bank, Maharajganj)
               </h3>
               <p className="text-xs sm:text-sm text-zinc-600">
                 Maharajganj - Duraundha Road, Sihauta Bazar, Siwan, Bihar - 841238

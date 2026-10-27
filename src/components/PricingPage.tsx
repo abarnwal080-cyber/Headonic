@@ -1,6 +1,6 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { FEMALE_PRICING, MALE_PRICING, PricingCategory, ServiceItem } from '../data/pricingData';
-import { Search, ChevronUp, ChevronDown, Check, Phone, Calendar, Sparkles, AlertCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { FEMALE_PRICING, MALE_PRICING } from '../data/pricingData';
+import { ChevronUp, ChevronDown, Check, Phone, Calendar, Sparkles, AlertCircle } from 'lucide-react';
 
 interface PricingPageProps {
   onOpenBooking: (serviceName?: string) => void;
@@ -8,7 +8,6 @@ interface PricingPageProps {
 
 export const PricingPage: React.FC<PricingPageProps> = ({ onOpenBooking }) => {
   const [activeGender, setActiveGender] = useState<'female' | 'male'>('female');
-  const [searchQuery, setSearchQuery] = useState('');
   const [expandedPackages, setExpandedPackages] = useState<Record<string, boolean>>({});
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [imageErrorMap, setImageErrorMap] = useState<Record<string, boolean>>({});
@@ -26,33 +25,6 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onOpenBooking }) => {
   }, []);
 
   const activeCategories = activeGender === 'female' ? FEMALE_PRICING : MALE_PRICING;
-
-  // Search filtering
-  const filteredCategories = useMemo(() => {
-    if (!searchQuery.trim()) return activeCategories;
-    const query = searchQuery.toLowerCase().trim();
-
-    return activeCategories
-      .map((cat) => {
-        const matchingServices = cat.services.filter(
-          (s) =>
-            s.name.toLowerCase().includes(query) ||
-            s.inclusions?.some((inc) => inc.toLowerCase().includes(query))
-        );
-        const catMatch =
-          cat.title.toLowerCase().includes(query) ||
-          cat.description.toLowerCase().includes(query);
-
-        if (catMatch || matchingServices.length > 0) {
-          return {
-            ...cat,
-            services: catMatch ? cat.services : matchingServices
-          };
-        }
-        return null;
-      })
-      .filter((cat): cat is PricingCategory => cat !== null);
-  }, [activeCategories, searchQuery]);
 
   const togglePackage = (id: string) => {
     setExpandedPackages((prev) => ({
@@ -91,111 +63,101 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onOpenBooking }) => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* HEADER TITLE SECTION */}
-        <div className="text-center my-8 md:my-12">
+        <div className="text-center my-6 md:my-10">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#B89A60]/30 bg-[#B89A60]/5 text-[#A67C36] text-xs sm:text-sm font-semibold tracking-wider uppercase mb-3">
             <Sparkles className="w-4 h-4 text-[#B89A60]" />
             Transparent & Honest Pricing
           </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#222222] tracking-tight mb-3">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#222222] tracking-tight mb-2">
             PRICING & SERVICE MENU
           </h1>
-          <p className="text-base sm:text-lg text-[#707070] max-w-2xl mx-auto font-normal">
-            Explore our beauty, makeup, hair and grooming services with transparent pricing.
+          <p className="text-sm sm:text-base text-[#707070] max-w-2xl mx-auto font-normal mb-6">
+            Explore our complete range of female and male beauty, makeup, hair and grooming services with transparent rate cards.
           </p>
+
+          {/* RECOMMENDED FAMOUS SERVICE QUICK SUGGESTIONS */}
+          <div className="max-w-4xl mx-auto bg-gradient-to-r from-amber-50/60 via-amber-100/40 to-amber-50/60 p-4 rounded-2xl border border-amber-200/70 shadow-xs mb-4 text-center">
+            <div className="text-xs uppercase font-extrabold tracking-wider text-[#A67C36] mb-2.5 flex items-center justify-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-[#B89A60]" />
+              Popular Recommended Services (Click to view rates)
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              {[
+                { label: '👰 Bridal & Pre-Wedding Makeover', gender: 'female', catId: 'f-bridal' },
+                { label: '💇‍♀️ Hair Smoothening & Keratin', gender: 'female', catId: 'f-hair' },
+                { label: '✨ Hydrafacial & Skin Care', gender: 'female', catId: 'f-skin' },
+                { label: '💈 Men Haircut & Fade', gender: 'male', catId: 'm-hair' },
+                { label: '🧔 Beard Spa & Hot Towel', gender: 'male', catId: 'm-beard' },
+                { label: '🌸 Cleanups & D-Tan', gender: 'female', catId: 'f-bleach' },
+                { label: '💆‍♂️ Men Facial & D-Tan Care', gender: 'male', catId: 'm-skin' },
+                { label: '💅 Waxing & Threading', gender: 'female', catId: 'f-beauty' },
+              ].map((rec, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => {
+                    setActiveGender(rec.gender as 'female' | 'male');
+                    setTimeout(() => scrollToCategory(rec.catId), 100);
+                  }}
+                  className="px-3.5 py-1.5 rounded-full text-xs font-bold bg-white text-[#222222] border border-amber-300 hover:border-[#B89A60] hover:bg-amber-400 hover:text-zinc-950 transition-all shadow-xs cursor-pointer transform hover:scale-105"
+                >
+                  {rec.label}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
-        {/* GENDER TABS & SEARCH BAR */}
+        {/* STICKY GENDER TABS & CATEGORY SHORTCUT NAVIGATION */}
         <div className="sticky top-20 z-30 bg-white/95 backdrop-blur-md pt-2 pb-4 mb-8 border-b border-[#EEEEEE] shadow-sm">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 max-w-4xl mx-auto">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-4xl mx-auto">
             
             {/* FEMALE / MALE TABS */}
-            <div className="inline-flex p-1 bg-gray-100 rounded-xl border border-[#EEEEEE] w-full md:w-auto">
+            <div className="inline-flex p-1 bg-gray-100 rounded-xl border border-[#EEEEEE] w-full sm:w-auto">
               <button
-                onClick={() => {
-                  setActiveGender('female');
-                  setSearchQuery('');
-                }}
-                className={`flex-1 md:flex-initial px-6 py-2.5 rounded-lg text-sm sm:text-base font-bold transition-all duration-200 ${
+                onClick={() => setActiveGender('female')}
+                className={`flex-1 sm:flex-initial px-8 py-2.5 rounded-lg text-sm sm:text-base font-bold transition-all duration-200 ${
                   activeGender === 'female'
-                    ? 'bg-white text-[#222222] shadow-sm border border-[#EEEEEE]'
+                    ? 'bg-[#B89A60] text-white shadow-md'
                     : 'text-[#707070] hover:text-[#222222]'
                 }`}
               >
                 Female Services
               </button>
               <button
-                onClick={() => {
-                  setActiveGender('male');
-                  setSearchQuery('');
-                }}
-                className={`flex-1 md:flex-initial px-6 py-2.5 rounded-lg text-sm sm:text-base font-bold transition-all duration-200 ${
+                onClick={() => setActiveGender('male')}
+                className={`flex-1 sm:flex-initial px-8 py-2.5 rounded-lg text-sm sm:text-base font-bold transition-all duration-200 ${
                   activeGender === 'male'
-                    ? 'bg-white text-[#222222] shadow-sm border border-[#EEEEEE]'
+                    ? 'bg-[#B89A60] text-white shadow-md'
                     : 'text-[#707070] hover:text-[#222222]'
                 }`}
               >
                 Male Services
               </button>
             </div>
-
-            {/* SEARCH INPUT */}
-            <div className="relative w-full md:w-80">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#707070]" />
-              <input
-                type="text"
-                placeholder="Search services..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#EEEEEE] bg-white text-sm text-[#222222] placeholder-[#707070] focus:outline-none focus:border-[#B89A60] focus:ring-1 focus:ring-[#B89A60] transition-all"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#707070] hover:text-[#222222] font-semibold"
-                >
-                  Clear
-                </button>
-              )}
-            </div>
           </div>
 
           {/* CATEGORY SHORTCUT NAVIGATION */}
-          {!searchQuery && (
-            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pt-3 max-w-4xl mx-auto px-1">
-              <span className="text-xs font-semibold text-[#707070] uppercase tracking-wider shrink-0 mr-1">
-                Jump to:
-              </span>
-              {activeCategories.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => scrollToCategory(cat.id)}
-                  className="shrink-0 px-3 py-1 rounded-full text-xs font-medium border border-[#EEEEEE] bg-white text-[#222222] hover:border-[#B89A60] hover:text-[#A67C36] transition-colors"
-                >
-                  {cat.title}
-                </button>
-              ))}
-            </div>
-          )}
+          <div className="flex items-center justify-center gap-2 overflow-x-auto no-scrollbar pt-3 max-w-4xl mx-auto px-1">
+            <span className="text-xs font-semibold text-[#707070] uppercase tracking-wider shrink-0 mr-1">
+              Jump to:
+            </span>
+            {activeCategories.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => scrollToCategory(cat.id)}
+                className="shrink-0 px-3 py-1 rounded-full text-xs font-medium border border-[#EEEEEE] bg-white text-[#222222] hover:border-[#B89A60] hover:text-[#A67C36] transition-colors shadow-xs"
+              >
+                {cat.title}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* CATEGORY CARDS CONTAINER */}
         <div className="space-y-8 max-w-4xl mx-auto">
-          {filteredCategories.length === 0 ? (
-            <div className="text-center py-16 bg-white rounded-2xl border border-[#EEEEEE] p-8">
-              <AlertCircle className="w-12 h-12 text-[#B89A60] mx-auto mb-3 opacity-60" />
-              <h3 className="text-lg font-bold text-[#222222] mb-1">No services match your search</h3>
-              <p className="text-sm text-[#707070] mb-4">Try typing a different keyword like "Facial", "Hair", or "Bridal".</p>
-              <button
-                onClick={() => setSearchQuery('')}
-                className="px-5 py-2 rounded-lg bg-[#B89A60] text-white text-sm font-semibold hover:bg-[#A67C36] transition-colors"
-              >
-                Reset Search
-              </button>
-            </div>
-          ) : (
-            filteredCategories.map((category) => {
-              const hasFailed = imageErrorMap[category.id];
-              const imgSrc = hasFailed ? category.image.fallbackUrl : category.image.url;
+          {activeCategories.map((category) => {
+            const hasFailed = imageErrorMap[category.id];
+            const imgSrc = hasFailed ? category.image.fallbackUrl : category.image.url;
 
               return (
                 <div
@@ -322,15 +284,14 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onOpenBooking }) => {
                   </div>
                 </div>
               );
-            })
-          )}
+            })}
         </div>
 
         {/* BOTTOM BOOKING CALLOUT BANNER */}
         <div className="mt-16 max-w-4xl mx-auto rounded-2xl border border-[#EEEEEE] bg-gradient-to-r from-gray-50 via-white to-gray-50 p-8 text-center shadow-sm">
           <h3 className="text-2xl font-bold text-[#222222] mb-2">Ready for a Rejuvenating Salon Experience?</h3>
           <p className="text-sm text-[#707070] mb-6 max-w-xl mx-auto">
-            Visit Hedonic Unisex Salon at 1st Floor, Sita Complex (Opp. Bandhan Bank, Near Reliance Trends Mart), Maharajganj.
+            Visit Hedonic Unisex Salon at 1st Floor, Sita Complex (Opp. Bandhan Bank), Maharajganj.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <button

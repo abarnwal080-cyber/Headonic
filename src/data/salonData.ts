@@ -6,9 +6,9 @@ export const SALON_INFO = {
   type: 'Unisex Beauty & Grooming Salon',
   rating: 5.0,
   ratingTotal: 128,
-  address: '1st Floor, Sita Complex, Maharajganj - Duraundha Road, Near Reliance Trends Mart, Sihauta Bazar, Bishunpur, Maharajganj, Siwan, Bihar - 841238',
+  address: '1st Floor, Sita Complex, Maharajganj - Duraundha Road, Near Bandhan Bank, Sihauta Bazar, Bishunpur, Maharajganj, Siwan, Bihar - 841238',
   addressShort: '1st Floor, Sita Complex, Maharajganj - Duraundha Rd, Siwan, Bihar 841238',
-  landmark: 'Near Reliance Trends Mart / Bandhan Bank, Sihauta Bazar',
+  landmark: 'Near Bandhan Bank, Sihauta Bazar',
   mobile: '+91 70434 32122',
   phoneClean: '+917043432122',
   whatsappNumber: '917043432122',
@@ -548,7 +548,7 @@ export const ALL_GALLERY_IMAGES: GalleryImage[] = [
     url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9LPYQh2oz2CTnOO3Hh9dxaCn2d003bD_3m0l7jHszqQ&s=10party',
     title: 'Cocktail & Engagement Party Look',
     category: 'party',
-    alt: 'Party makeup artist near Reliance Trends Mart Maharajganj',
+    alt: 'Party makeup artist near Bandhan Bank Maharajganj',
   },
   {
     id: 'party-2',
@@ -650,7 +650,7 @@ export const ALL_GALLERY_IMAGES: GalleryImage[] = [
     url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThes2y58I5sQp6FE0llLSvRmrAWsmV3AQb6zTv1pSv3A&s=10',
     title: 'Gold & Diamond Luxury Brightening Facial',
     category: 'skincare',
-    alt: 'Gold and Diamond facial near Reliance Trends Mart',
+    alt: 'Gold and Diamond facial near Bandhan Bank',
   },
   {
     id: 'skin-3',
@@ -805,7 +805,7 @@ export const CLIENT_REVIEWS: Review[] = [
 export const FAQS = [
   {
     q: 'Where is Hedonic Unisex Salon located in Maharajganj?',
-    a: 'We are situated on the 1st Floor of Sita Complex, along Maharajganj - Duraundha Road, right near Reliance Trends Mart and Bandhan Bank in Sihauta Bazar, Maharajganj, Siwan, Bihar - 841238.',
+    a: 'We are situated on the 1st Floor of Sita Complex, along Maharajganj - Duraundha Road, near Bandhan Bank in Sihauta Bazar, Maharajganj, Siwan, Bihar - 841238.',
   },
   {
     q: 'Do you offer separate private spaces for women and men?',

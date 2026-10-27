@@ -17,8 +17,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onBookClick, onOpenIma
       <div className="absolute -top-10 right-0 w-96 h-96 bg-purple-200/20 blur-[100px] pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Main Headline & Intro Header (Removed text per user instruction) */}
-        <div className="text-center max-w-4xl mx-auto space-y-4">
+        {/* Main Headline & Intro Header */}
+        <div className="relative z-10 text-center max-w-4xl mx-auto space-y-4 bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 border border-pink-200/80 shadow-md shadow-pink-900/5">
           <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-extrabold text-zinc-900 tracking-tight leading-[1.15]">
             Hedonic Unisex Salon <br className="hidden sm:inline" />
             <span className="gold-gradient-text text-2xl sm:text-4xl lg:text-5xl block sm:inline mt-1 sm:mt-0">
@@ -26,33 +26,20 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onBookClick, onOpenIma
             </span>
           </h1>
 
-          <p className="text-zinc-600 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-2">
+          <p className="text-zinc-600 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto flex items-center justify-center gap-2">
             <span className="flex items-center gap-1.5 text-zinc-800 font-medium">
               <MapPin className="w-4 h-4 text-rose-600 shrink-0" />
-              1st Floor, Sita Complex, Maharajganj (Near Reliance Trends Mart)
-            </span>
-            <span className="hidden sm:inline text-zinc-400">•</span>
-            <span className="inline-flex items-center gap-1.5 bg-amber-500/15 px-3 py-1 rounded-full text-amber-900 font-bold text-xs sm:text-sm border border-amber-400/80 shadow-xs">
-              <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
-              5/5 on Google
+              1st Floor, Sita Complex, Maharajganj (Near Bandhan Bank)
             </span>
           </p>
 
           {/* Call to action buttons */}
           <div className="flex flex-wrap items-center justify-center gap-3.5 pt-2">
-            <button
-              onClick={onBookClick}
-              className="px-6 sm:px-8 py-3.5 rounded-full bg-gradient-to-r from-[#b5881a] via-[#d4af37] to-[#e7c75c] text-black font-bold text-sm tracking-wide shadow-lg shadow-amber-900/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2 group cursor-pointer"
-            >
-              <Calendar className="w-4 h-4 text-black group-hover:rotate-12 transition-transform" />
-              <span>Book Appointment</span>
-            </button>
-
             <a
               href={`tel:${SALON_INFO.phoneClean}`}
-              className="px-5 sm:px-7 py-3.5 rounded-full border border-pink-200 bg-white/90 hover:bg-white text-zinc-800 font-bold text-sm hover:border-[#d4af37] hover:text-[#b8860b] transition-all flex items-center gap-2 group shadow-sm"
+              className="px-6 sm:px-8 py-3.5 rounded-full bg-gradient-to-r from-[#b5881a] via-[#d4af37] to-[#e7c75c] text-black font-bold text-sm tracking-wide shadow-lg shadow-amber-900/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2 group cursor-pointer"
             >
-              <Phone className="w-4 h-4 text-pink-600 group-hover:animate-bounce" />
+              <Phone className="w-4 h-4 text-black group-hover:rotate-12 transition-transform" />
               <span>Call +91 70434 32122</span>
             </a>
           </div>
@@ -104,7 +91,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onBookClick, onOpenIma
               </div>
               <div className="px-2 py-2 flex items-center justify-between text-xs text-zinc-700 font-medium">
                 <span>1st Floor, Sita Complex Entrance</span>
-                <span className="text-[#8b6508] font-bold">Near Trends Mart</span>
+                <span className="text-[#8b6508] font-bold">Near Bandhan Bank</span>
               </div>
             </div>
 

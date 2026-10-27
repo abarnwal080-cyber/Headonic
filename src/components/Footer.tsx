@@ -170,7 +170,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavClick, onBookClick, onRepla
               <p className="flex items-start gap-2 text-zinc-700">
                 <MapPin className="w-4 h-4 text-pink-600 shrink-0 mt-0.5" />
                 <span>
-                  1st Floor, Sita Complex, Maharajganj - Duraundha Rd, Near Reliance Trends Mart, Sihauta Bazar, Siwan, Bihar - 841238
+                  1st Floor, Sita Complex, Maharajganj - Duraundha Rd, Near Bandhan Bank, Sihauta Bazar, Siwan, Bihar - 841238
                 </span>
               </p>
 

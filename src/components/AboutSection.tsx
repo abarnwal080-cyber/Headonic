@@ -32,7 +32,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onBookClick }) => {
           </h3>
           
           <p className="text-zinc-700 text-sm sm:text-base leading-relaxed">
-            <strong className="text-zinc-900 font-semibold">Hedonic Unisex Salon</strong> is a premier beauty and grooming center situated at the heart of Maharajganj, Siwan, Bihar. Located in a prime commercial hotspot on the 1st Floor of Sita Complex (Maharajganj - Duraundha Road, Near Reliance Trends Mart and Bandhan Bank), we bridge cosmopolitan styling standards with warm, personalized Bihari hospitality.
+            <strong className="text-zinc-900 font-semibold">Hedonic Unisex Salon</strong> is a premier beauty and grooming center situated at the heart of Maharajganj, Siwan, Bihar. Located in a prime commercial hotspot on the 1st Floor of Sita Complex (Maharajganj - Duraundha Road, Near Bandhan Bank), we bridge cosmopolitan styling standards with warm, personalized Bihari hospitality.
           </p>
 
           <p className="text-zinc-600 text-xs sm:text-sm leading-relaxed">
@@ -78,7 +78,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onBookClick }) => {
           <div className="pt-4 border-t border-pink-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
             <span className="text-zinc-600 flex items-center gap-1.5">
               <MapPin className="w-4 h-4 text-[#b8860b]" />
-              1st Floor, Sita Complex (Opp. Bandhan Bank / Near Reliance Trends Mart)
+              1st Floor, Sita Complex (Opp. Bandhan Bank, Maharajganj)
             </span>
             <a
               href={SALON_INFO.googleMapsUrl}

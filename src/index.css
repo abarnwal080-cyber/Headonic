@@ -101,6 +101,18 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Background cosmetic icons blink in / blink out animation */
+@keyframes blinkInOut {
+  0%, 100% {
+    opacity: 0.05;
+    transform: scale(0.85) rotate(-5deg);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(1.18) rotate(6deg);
+  }
+}
+
 .animate-fadeIn {
   animation: fadeIn 0.35s ease-out forwards;
 }
@@ -114,4 +126,5 @@ body {
 .gold-border-glow {
   box-shadow: 0 0 25px -5px rgba(212, 175, 55, 0.28);
 }
+
 

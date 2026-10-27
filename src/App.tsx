@@ -24,6 +24,7 @@ import { TypeformBookingModal } from './components/TypeformBookingModal';
 import { ImageModal } from './components/ImageModal';
 import { PremiumLoader } from './components/PremiumLoader';
 import { MeetTheMUA } from './components/MeetTheMUA';
+import { BackgroundCosmetics } from './components/BackgroundCosmetics';
 import { ServiceSubpage } from './types';
 
 export default function App() {
@@ -84,6 +85,8 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-white text-[#222222] flex flex-col font-sans selection:bg-[#B89A60] selection:text-white relative">
+      {/* Animated Blinking Cosmetic Background Icons */}
+      <BackgroundCosmetics />
 
       {/* Premium Loader with Icons celebrating "Proud of Maharajganj" */}
       {showLoader && (
