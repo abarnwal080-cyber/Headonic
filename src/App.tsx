@@ -22,6 +22,7 @@ import { ReviewSocialPage } from './components/ReviewSocialPage';
 import { TypeformBookingModal } from './components/TypeformBookingModal';
 import { ImageModal } from './components/ImageModal';
 import { PremiumLoader } from './components/PremiumLoader';
+import { MeetTheMUA } from './components/MeetTheMUA';
 import { ServiceSubpage } from './types';
 
 export default function App() {
@@ -153,6 +154,9 @@ export default function App() {
                 onSelectSubpage={(subpage) => setActiveSubpage(subpage)}
               />
             </div>
+
+            {/* Meet the MUA ( Owner ) Section: Mr Amarjeet Kumar */}
+            <MeetTheMUA onBookClick={(svc) => handleOpenBooking(svc)} />
 
             {/* Gallery Section: Carousel with very small frames by default + Button opening full gallery subpage */}
             <GallerySection
